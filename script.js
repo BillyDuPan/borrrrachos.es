@@ -1,3 +1,15 @@
+let beerPlaces = []; // This will hold the data from the JSON file
+
+// Fetch the JSON data when the script loads
+fetch('beer_places.json')
+    .then(response => response.json())
+    .then(data => {
+        beerPlaces = data;
+    })
+    .catch(error => {
+        console.error('Error fetching beer places data:', error);
+    });
+
 function findBeerPlace() {
     const fizzElement = document.getElementById('fizz');
     const beerSound = document.getElementById('beerSound');
@@ -13,24 +25,15 @@ function findBeerPlace() {
     // Change button text
     button.innerText = buttonPhrases[Math.floor(Math.random() * buttonPhrases.length)];
 
+    // Wait for 2 seconds (simulate delay)
     setTimeout(() => {
-        const beerPlaces = [
-            { name: "Bar Barcelona", address: "Carrer de Mallorca, 123", rating: 4.5, image: "https://via.placeholder.com/300x200?text=Bar+Barcelona", type: "bar" },
-            { name: "Cerveceria Catalana", address: "Carrer de Mallorca, 236", rating: 4.7, image: "https://via.placeholder.com/300x200?text=Cerveceria+Catalana", type: "bar" },
-            { name: "BlackLab Brewhouse", address: "Plaça Pau Vila, 1", rating: 4.3, image: "https://via.placeholder.com/300x200?text=BlackLab+Brewhouse", type: "brewery" },
-            { name: "BierCab", address: "Carrer de Muntaner, 55", rating: 4.6, image: "https://via.placeholder.com/300x200?text=BierCab", type: "bar" },
-            { name: "Ale&Hop", address: "Carrer de les Basses de Sant Pere, 10", rating: 4.4, image: "https://via.placeholder.com/300x200?text=Ale%26Hop", type: "craft beer shop" },
-            { name: "The Beer Spot", address: "Carrer de Balmes, 200", rating: 4.8, image: "https://via.placeholder.com/300x200?text=The+Beer+Spot", type: "craft beer shop" },
-            { name: "La Birreria", address: "Carrer de la Diputació, 65", rating: 4.2, image: "https://via.placeholder.com/300x200?text=La+Birreria", type: "bar" },
-            { name: "Craft & Draft", address: "Carrer de Provença, 75", rating: 4.9, image: "https://via.placeholder.com/300x200?text=Craft+%26+Draft", type: "bar" },
-            { name: "Hopsters Haven", address: "Carrer de Pau Claris, 123", rating: 4.3, image: "https://via.placeholder.com/300x200?text=Hopsters+Haven", type: "craft beer shop" },
-            { name: "Beer Brothers", address: "Carrer de Gran Via, 340", rating: 4.6, image: "https://via.placeholder.com/300x200?text=Beer+Brothers", type: "brewery" },
-            { name: "Barrel & Tap", address: "Carrer de Casanova, 88", rating: 4.4, image: "https://via.placeholder.com/300x200?text=Barrel+%26+Tap", type: "bar" },
-            { name: "Foam & Malt", address: "Carrer de Sants, 50", rating: 4.7, image: "https://via.placeholder.com/300x200?text=Foam+%26+Malt", type: "bar" },
-            { name: "El Hoppin'", address: "Carrer de Gràcia, 29", rating: 4.5, image: "https://via.placeholder.com/300x200?text=El+Hoppin'", type: "bar" },
-            { name: "Draft Kings", address: "Carrer de la Marina, 70", rating: 4.8, image: "https://via.placeholder.com/300x200?text=Draft+Kings", type: "brewery" },
-            { name: "The Hoppy Place", address: "Carrer de Les Corts, 105", rating: 4.7, image: "https://via.placeholder.com/300x200?text=The+Hoppy+Place", type: "craft beer shop" }
-        ];
+        // Check if the data has been loaded
+        if (beerPlaces.length === 0) {
+            console.error('Beer places data is not loaded yet.');
+            fizzElement.style.display = 'none';
+            alert('Data is still loading, please try again in a moment.');
+            return;
+        }
 
         const filterBar = document.getElementById('filterBar').checked;
         const filterBrewery = document.getElementById('filterBrewery').checked;
@@ -42,6 +45,13 @@ function findBeerPlace() {
             if (place.type === 'craft beer shop' && filterCraftBeer) return true;
             return false;
         });
+
+        // Check if there are any places after filtering
+        if (filteredPlaces.length === 0) {
+            document.getElementById('result').innerHTML = '<p>No places match your filters.</p>';
+            fizzElement.style.display = 'none';
+            return;
+        }
 
         const randomIndex = Math.floor(Math.random() * filteredPlaces.length);
         const beerPlace = filteredPlaces[randomIndex];
