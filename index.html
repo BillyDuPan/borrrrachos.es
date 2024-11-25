@@ -15,18 +15,21 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #F8DE7E;
             overflow: auto;
+            padding: 20px;
+            box-sizing: border-box;
         }
         h1 {
-            font-family: 'Clash Display', sans-serif; font-weight: 700;
-            font-size: 4em;
+            font-family: 'Clash Display', sans-serif;
+            font-weight: 700;
+            font-size: 3em;
             margin-bottom: 20px;
         }
         button {
-            padding: 15px 30px;
-            font-size: 1.5em;
+            padding: 15px 20px;
+            font-size: 1.2em;
             cursor: pointer;
             background-color: #000;
             color: #fff;
@@ -39,27 +42,30 @@
         }
         #filters {
             margin-bottom: 20px;
-            font-size: 1.2em;
+            font-size: 1em;
         }
         #result {
             margin-top: 30px;
-            font-weight: 500; font-size: 1.8em; text-align: center;
-            max-width: 600px;
+            font-weight: 500;
+            font-size: 1.5em;
+            text-align: center;
+            max-width: 100%;
+            width: 100%;
         }
         .bar-name {
-            font-size: 48px;
+            font-size: 2em;
             font-weight: 700;
         }
         img {
             width: 100%;
-            max-width: 400px;
+            max-width: 300px;
             height: auto;
             object-fit: cover;
             margin-top: 20px;
             border-radius: 10px;
         }
         #fizz {
-            font-size: 2em;
+            font-size: 1.5em;
             color: #fff;
             text-shadow: 2px 2px #000;
             animation: fizzAnimation 1s infinite;
@@ -71,31 +77,10 @@
             100% { transform: translateY(0); opacity: 1; }
         }
         .beer-fact {
-            font-style: italic; font-weight: 400; font-size: 1.2em;
-        }
-        .reviews {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 1em;
             margin-top: 20px;
-            font-size: 1.2em;
-            text-align: left;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .review-item {
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-        }
-        .review-item:last-child {
-            border-bottom: none;
-        }
-        .review-author {
-            font-weight: bold;
-            margin-top: 5px;
         }
         a {
             color: #000;
@@ -104,6 +89,21 @@
         }
         a:hover {
             text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            button {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+            .bar-name {
+                font-size: 1.5em;
+            }
+            .beer-fact {
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
@@ -118,7 +118,6 @@
     <div id="fizz">🍺 Fizzzzz...</div>
     <div id="result"></div>
     <div class="beer-fact" id="beerFact"></div>
-    <div class="reviews" id="reviews"></div>
 
     <audio id="beerSound" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
 
@@ -193,20 +192,6 @@
                     <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a></p>
                 `;
                 document.getElementById('beerFact').innerText = `Fun Fact: ${beerFact}`;
-
-                // Mockup Reviews Section
-                const reviews = [
-                    { text: "Great atmosphere and amazing beer selection!", author: "John D." },
-                    { text: "Loved the vibes, definitely coming back.", author: "Sarah K." },
-                    { text: "One of the best places for craft beers in the city!", author: "Alex P." },
-                    { text: "Friendly staff and excellent brews.", author: "Maria L." },
-                    { text: "Perfect place to hang out with friends.", author: "Jake W." }
-                ];
-                let reviewsHtml = '<h3>Reviews:</h3>';
-                reviews.forEach(review => {
-                    reviewsHtml += `<div class="review-item"><p>${review.text}</p><div class="review-author">- ${review.author}</div></div>`;
-                });
-                document.getElementById('reviews').innerHTML = reviewsHtml;
 
                 fizzElement.style.display = 'none';
             }, 2000);
