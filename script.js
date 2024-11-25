@@ -1,84 +1,107 @@
-let beerPlaces = []; // This will hold the data from the JSON file
+// script.js
 
-// Fetch the JSON data when the script loads
-fetch('beer_places.json')
-    .then(response => response.json())
-    .then(data => {
-        beerPlaces = data;
-    })
-    .catch(error => {
-        console.error('Error fetching beer places data:', error);
-    });
-
-function findBeerPlace() {
+document.addEventListener('DOMContentLoaded', () => {
+    // Element References
     const fizzElement = document.getElementById('fizz');
     const beerSound = document.getElementById('beerSound');
-    const button = document.getElementById('generateButton');
+    const generateButton = document.getElementById('generateButton');
+    const resultElement = document.getElementById('result');
+    const beerFactElement = document.getElementById('beerFact');
+    const filterBarCheckbox = document.getElementById('filterBar');
+    const filterBreweryCheckbox = document.getElementById('filterBrewery');
+    const filterCraftBeerCheckbox = document.getElementById('filterCraftBeer');
+
+    // Constants and Variables
     const buttonPhrases = ["Let’s Drink Up!", "Beer Me!", "Find My Brew!", "Cheers!", "Hop to It!"];
+    const beerFacts = [
+        "Beer is one of the oldest drinks in the world, dating back to 5,000 BC!",
+        "The oldest known recipe for beer is over 4,000 years old, from ancient Mesopotamia!",
+        "Germany has over 1,500 different types of beer.",
+        "Cenosillicaphobia is the fear of an empty beer glass.",
+        "In 1814, London experienced the Great Beer Flood, releasing over 323,000 gallons of beer."
+    ];
+    let beerPlaces = []; // This will hold the data from the JSON file
 
-    // Play beer sound
-    beerSound.play();
+    // Disable the button until data is loaded
+    generateButton.disabled = true;
+    generateButton.innerText = 'Loading...';
 
-    // Show fizz animation
-    fizzElement.style.display = 'block';
-
-    // Change button text
-    button.innerText = buttonPhrases[Math.floor(Math.random() * buttonPhrases.length)];
-
-    // Wait for 2 seconds (simulate delay)
-    setTimeout(() => {
-        // Check if the data has been loaded
-        if (beerPlaces.length === 0) {
-            console.error('Beer places data is not loaded yet.');
-            fizzElement.style.display = 'none';
-            alert('Data is still loading, please try again in a moment.');
-            return;
+    // Fetch the data
+    async function loadBeerPlaces() {
+        try {
+            const response = await fetch('beer_places.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            beerPlaces = await response.json();
+            // Enable the button
+            generateButton.disabled = false;
+            generateButton.innerText = 'Generate Random Beer Spot';
+        } catch (error) {
+            console.error('Error fetching beer places data:', error);
+            alert('Failed to load data. Please try again later.');
+            generateButton.innerText = 'Unavailable';
         }
+    }
 
-        const filterBar = document.getElementById('filterBar').checked;
-        const filterBrewery = document.getElementById('filterBrewery').checked;
-        const filterCraftBeer = document.getElementById('filterCraftBeer').checked;
+    // Call the function to load data
+    loadBeerPlaces();
+
+    // Event Listener for the Generate Button
+    generateButton.addEventListener('click', () => {
+        findBeerPlace();
+    });
+
+    async function findBeerPlace() {
+        // Play beer sound
+        beerSound.play();
+
+        // Show fizz animation
+        fizzElement.style.display = 'block';
+
+        // Change button text
+        generateButton.innerText = buttonPhrases[Math.floor(Math.random() * buttonPhrases.length)];
+
+        // Wait for 2 seconds (simulate delay)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        const filterBar = filterBarCheckbox.checked;
+        const filterBrewery = filterBreweryCheckbox.checked;
+        const filterCraftBeer = filterCraftBeerCheckbox.checked;
 
         const filteredPlaces = beerPlaces.filter(place => {
-            if (place.type === 'bar' && filterBar) return true;
-            if (place.type === 'brewery' && filterBrewery) return true;
-            if (place.type === 'craft beer shop' && filterCraftBeer) return true;
-            return false;
+            return (
+                (place.type === 'bar' && filterBar) ||
+                (place.type === 'brewery' && filterBrewery) ||
+                (place.type === 'craft beer shop' && filterCraftBeer)
+            );
         });
 
         // Check if there are any places after filtering
         if (filteredPlaces.length === 0) {
-            document.getElementById('result').innerHTML = '<p>No places match your filters.</p>';
+            resultElement.innerHTML = '<p>No places match your filters.</p>';
             fizzElement.style.display = 'none';
+            generateButton.innerText = 'Generate Random Beer Spot';
             return;
         }
 
-        const randomIndex = Math.floor(Math.random() * filteredPlaces.length);
-        const beerPlace = filteredPlaces[randomIndex];
+        const randomPlace = filteredPlaces[Math.floor(Math.random() * filteredPlaces.length)];
+        const randomFact = beerFacts[Math.floor(Math.random() * beerFacts.length)];
 
-        const beerFacts = [
-            "Beer is one of the oldest drinks in the world, dating back to 5,000 BC!",
-            "The oldest known recipe for beer is over 4,000 years old, from ancient Mesopotamia!",
-            "Germany has over 1,500 different types of beer.",
-            "Cenosillicaphobia is the fear of an empty beer glass.",
-            "In 1814, London experienced the Great Beer Flood, releasing over 323,000 gallons of beer."
-        ];
+        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(randomPlace.address)}`;
+        const whatsappUrl = `https://api.whatsapp.com/send?text=Check%20out%20this%20beer%20spot:%20${encodeURIComponent(randomPlace.name)}%20at%20${encodeURIComponent(randomPlace.address)}.%20Get%20directions%20here:%20${encodeURIComponent(googleMapsUrl)}`;
 
-        const randomFactIndex = Math.floor(Math.random() * beerFacts.length);
-        const beerFact = beerFacts[randomFactIndex];
-
-        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(beerPlace.address)}`;
-        const whatsappUrl = `https://api.whatsapp.com/send?text=Check%20out%20this%20beer%20spot:%20${encodeURIComponent(beerPlace.name)}%20at%20${encodeURIComponent(beerPlace.address)}.%20Get%20directions%20here:%20${encodeURIComponent(googleMapsUrl)}`;
-
-        document.getElementById('result').innerHTML = `
-            <p class="bar-name"><strong>${beerPlace.name}</strong></p>
-            <img src="${beerPlace.image}" alt="${beerPlace.name}">
-            <p>Address: ${beerPlace.address}<br>
-            Rating: ${beerPlace.rating}<br>
+        resultElement.innerHTML = `
+            <p class="bar-name"><strong>${randomPlace.name}</strong></p>
+            <img src="${randomPlace.image}" alt="${randomPlace.name}">
+            <p>Address: ${randomPlace.address}<br>
+            Rating: ${randomPlace.rating}<br>
             <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a></p>
         `;
-        document.getElementById('beerFact').innerText = `Fun Fact: ${beerFact}`;
+        beerFactElement.innerText = `Fun Fact: ${randomFact}`;
 
+        // Hide fizz animation and reset button text
         fizzElement.style.display = 'none';
-    }, 2000);
-}
+        generateButton.innerText = 'Generate Random Beer Spot';
+    }
+});
