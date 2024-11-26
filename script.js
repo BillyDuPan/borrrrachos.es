@@ -77,15 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Wait for 2 seconds (simulate delay)
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-        const filterBar = filterBarCheckbox.checked;
-        const filterBrewery = filterBreweryCheckbox.checked;
-        const filterCraftBeer = filterCraftBeerCheckbox.checked;
+        const filterBars = filterBarsCheckbox.checked;
+        const filterCupas = filterCupasCheckbox.checked;
+        const filterTienda = filterTiendaCheckbox.checked;
+        const filterComida = filterComidaCheckbox.checked;
 
         const filteredPlaces = beerPlaces.filter(place => {
             return (
-                (place.type === 'bar' && filterBar) ||
-                (place.type === 'brewery' && filterBrewery) ||
-                (place.type === 'craft beer shop' && filterCraftBeer)
+                (place.type === 'bar' && filterBars) ||
+                (place.type === 'cupas / pubs' && filterCupas) ||
+                (place.type === 'tienda' && filterTienda) ||
+                (place.type === 'con comida' && filterComida)
             );
         });
 
