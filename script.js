@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const filteredPlaces = beerPlaces.filter(place => {
             return (
-                (place.type === 'bar' && filterBars) ||
+                (place.type === 'bars' && filterBars) ||
                 (place.type === 'cupas / pubs' && filterCupas) ||
                 (place.type === 'tienda' && filterTienda) ||
                 (place.type === 'con comida' && filterComida)
