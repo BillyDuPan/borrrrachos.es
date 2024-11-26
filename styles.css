@@ -135,9 +135,10 @@ button:disabled {
 #result {
     margin-top: 30px;
     font-size: 1.1rem;
-    max-width: 100%;
+    max-width: 600px;
     width: 100%;
     padding: 0 20px;
+    text-align: left;
 }
 
 .bar-name {
@@ -145,15 +146,11 @@ button:disabled {
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 15px;
+    text-align: center;
 }
 
-/* Bar Details Grid */
+/* Bar Details */
 .bar-details {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    align-items: start;
-    justify-items: center;
     background: var(--glass-bg);
     padding: 20px;
     border-radius: var(--border-radius);
@@ -164,7 +161,6 @@ button:disabled {
 .bar-details p {
     font-size: 1rem;
     line-height: 1.6;
-    text-align: center;
 }
 
 .bar-details a {
@@ -188,6 +184,8 @@ button:disabled {
     font-size: 1rem;
     margin-top: 30px;
     color: var(--primary-color);
+    max-width: 600px;
+    padding: 0 20px;
 }
 
 /* Badges Styles */
@@ -245,14 +243,6 @@ footer a:hover {
 @media (min-width: 600px) {
     #filters {
         gap: 20px;
-    }
-
-    .bar-details {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .bar-details p {
-        text-align: left;
     }
 }
 

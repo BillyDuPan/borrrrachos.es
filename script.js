@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let beerPlaces = []; // This will hold the data from the JSON file
     let achievements = []; // To track user achievements
     let lottieAnimation; // Lottie animation instance
+    let clickCount = 0; // To track the number of times the button has been clicked
 
     // Disable the button until data is loaded
     generateButton.disabled = true;
@@ -58,6 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function findBeerPlace() {
+        // Increment click count
+        clickCount++;
+
         // Play beer sound
         beerSound.play().catch(error => {
             console.error('Error playing sound:', error);
@@ -102,6 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
         resultElement.innerHTML = `
             <p class="bar-name"><strong>${randomPlace.name}</strong></p>
             <div class="bar-details">
+                <div class="labels">
+                    <span class="label neighborhood">${randomPlace.neighborhood}</span>
+                    <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
+                </div>
                 <p>
                     Address: ${randomPlace.address}<br>
                     Rating: ${randomPlace.rating}<br>
@@ -112,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         beerFactElement.innerText = `Fun Fact: ${randomFact}`;
 
         // Unlock Achievements
-        unlockAchievement('first_generate');
+        checkAchievements();
 
         // Hide Lottie animation and reset button text
         lottieContainer.style.display = 'none';
@@ -132,6 +140,24 @@ document.addEventListener('DOMContentLoaded', () => {
         lottieAnimation.setSpeed(1.5); // Optional: Adjust the speed of the animation
     }
 
+    // Check and Unlock Achievements Based on Click Count
+    function checkAchievements() {
+        if (clickCount === 1) {
+            unlockAchievement('first_generate');
+        } else if (clickCount === 5) {
+            unlockAchievement('five_clicks');
+        } else if (clickCount === 10) {
+            unlockAchievement('ten_clicks');
+        } else if (clickCount === 20) {
+            unlockAchievement('twenty_clicks');
+        } else if (clickCount === 50) {
+            unlockAchievement('fifty_clicks');
+        } else if (clickCount === 100) {
+            unlockAchievement('hundred_clicks');
+        }
+        // Add more milestones if desired
+    }
+
     // Achievements System
     function unlockAchievement(achievementId) {
         if (achievements.includes(achievementId)) return;
@@ -141,7 +167,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         switch (achievementId) {
             case 'first_generate':
-                badge = createBadge('First Beer!', 'fa-beer');
+                badge = createBadge('First Beer!', 'fa-beer', 'Congrats on your first beer spot!');
+                break;
+            case 'five_clicks':
+                badge = createBadge('Thirsty Traveler', 'fa-beer', '5 beer spots found! Keep it flowing!');
+                break;
+            case 'ten_clicks':
+                badge = createBadge('Beer Enthusiast', 'fa-beer', '10 beer spots? You’re on a roll!');
+                break;
+            case 'twenty_clicks':
+                badge = createBadge('Pub Crawler', 'fa-beer', '20 beer spots! The night is young!');
+                break;
+            case 'fifty_clicks':
+                badge = createBadge('Bottomless Mug', 'fa-beer', '50 beer spots! Is there no end to your thirst?');
+                break;
+            case 'hundred_clicks':
+                badge = createBadge('Legendary Drinker', 'fa-beer', '100 beer spots! You’re a legend!');
                 break;
             // Add more achievements here
             default:
@@ -151,10 +192,15 @@ document.addEventListener('DOMContentLoaded', () => {
         badgesElement.appendChild(badge);
     }
 
-    function createBadge(title, iconClass) {
+    function createBadge(title, iconClass, description) {
         const badge = document.createElement('div');
         badge.classList.add('badge');
-        badge.innerHTML = `<i class="fas ${iconClass}"></i> ${title}`;
+        badge.innerHTML = `<i class="fas ${iconClass}"></i> ${title}<br><small>${description}</small>`;
         return badge;
+    }
+
+    // Helper Function to Capitalize First Letter
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 });
