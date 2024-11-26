@@ -104,19 +104,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const whatsappUrl = `https://api.whatsapp.com/send?text=Check%20out%20this%20beer%20spot:%20${encodeURIComponent(randomPlace.name)}%20at%20${encodeURIComponent(randomPlace.address)}.%20Get%20directions%20here:%20${encodeURIComponent(googleMapsUrl)}`;
 
         resultElement.innerHTML = `
+        <div class="bar-details">
             <p class="bar-name"><strong>${randomPlace.name}</strong></p>
-            <div class="bar-details">
-                <div class="labels">
-                    <span class="label neighborhood">${randomPlace.neighborhood}</span>
-                    <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
-                </div>
-                <p>
-                    Address: ${randomPlace.address}<br>
-                    Rating: ${randomPlace.rating}<br>
-                    <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a>
-                </p>
+            <div class="labels">
+                <span class="label neighborhood">${randomPlace.neighborhood}</span>
+                <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
             </div>
-        `;
+            <p>
+                Address: ${randomPlace.address}<br>
+                Rating: ${randomPlace.rating}<br>
+                <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a>
+            </p>
+        </div>
+    `;
+    
         beerFactElement.innerText = `Fun Fact: ${randomFact}`;
 
         // Unlock Achievements

@@ -74,32 +74,57 @@ h1 {
 /* Filter Styles */
 #filters {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 150px; /* Adjust based on the desired height */
     margin-bottom: 20px;
+    padding: 10px;
+    gap: 10px;
 }
 
-#filters label {
+#filters::-webkit-scrollbar {
+    width: 6px;
+}
+
+#filters::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.chip {
     display: flex;
     align-items: center;
     font-size: 1rem;
     cursor: pointer;
     background: var(--glass-bg);
     padding: 10px 15px;
-    border-radius: var(--border-radius);
+    border-radius: 50px;
     backdrop-filter: var(--backdrop-filter);
-    transition: transform var(--transition-speed);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
-#filters label:hover {
-    transform: translateY(-2px);
+.chip input[type="checkbox"] {
+    display: none;
 }
 
-#filters input[type="checkbox"] {
-    margin-right: 8px;
-    accent-color: var(--primary-color);
+.chip input[type="checkbox"] + span {
+    margin-left: 8px;
 }
+
+.chip input[type="checkbox"]:checked + span {
+    color: var(--button-text-color);
+}
+
+.chip input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+}
+
+.chip:hover {
+    background-color: var(--secondary-color);
+    color: var(--button-text-color);
+}
+
 
 /* Button Styles */
 button {
@@ -141,13 +166,11 @@ button:disabled {
     text-align: left;
 }
 
-.bar-name {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 15px;
-    text-align: center;
+#generateButton {
+    margin: 20px 0;
 }
+
+
 
 /* Bar Details */
 
@@ -157,6 +180,14 @@ button:disabled {
     border-radius: var(--border-radius);
     backdrop-filter: var(--backdrop-filter);
     box-shadow: var(--box-shadow);
+}
+
+.bar-details .bar-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .bar-details p {

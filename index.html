@@ -38,18 +38,27 @@
         <main class="main-content">
             <h1>Cervezabeer.es</h1>
             <div id="filters">
-                <label><input type="checkbox" id="filterBar" checked> Bars</label>
-                <label><input type="checkbox" id="filterBrewery" checked> Breweries</label>
-                <label><input type="checkbox" id="filterCraftBeer" checked> Craft Beer Shops</label>
+                <label class="chip">
+                    <input type="checkbox" id="filterBar" checked> Bars
+                </label>
+                <label class="chip">
+                    <input type="checkbox" id="filterBrewery" checked> Breweries
+                </label>
+                <label class="chip">
+                    <input type="checkbox" id="filterCraftBeer" checked> Craft Beer Shops
+                </label>
             </div>
-            <button id="generateButton">Generate Random Beer Spot</button>
             <div id="lottie-animation" style="width: 200px; height: 200px; margin: 20px auto; display: none;"></div>
             <div id="result"></div>
-            <div class="beer-fact" id="beerFact"></div>
+            <button id="generateButton">Generate Random Beer Spot</button>
             <!-- Gamification Badges -->
             <div id="badges">
                 <!-- Badges will be dynamically added here -->
             </div>
+            <!-- Beer facts -->
+            <div class="beer-fact" id="beerFact"></div>
+            
+            
         </main>
         <!-- Footer -->
         <footer>
