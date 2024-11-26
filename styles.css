@@ -35,7 +35,7 @@
 body {
     font-family: var(--font-family);
     color: var(--text-color);
-    background: linear-gradient(10deg, #fceabb 0%, #f8b500 100%);
+    background: linear-gradient(180deg, #fceabb 0%, #f8b500 100%);
     overflow-x: hidden;
 }
 
