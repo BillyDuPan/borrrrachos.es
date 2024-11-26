@@ -5,10 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultElement = document.getElementById('result');
     const beerFactElement = document.getElementById('beerFact');
     const badgesElement = document.getElementById('badges');
-    const filterBarCheckbox = document.getElementById('filterBar');
-    const filterBreweryCheckbox = document.getElementById('filterBrewery');
-    const filterCraftBeerCheckbox = document.getElementById('filterCraftBeer');
-    const lottieContainer = document.getElementById('lottie-animation'); // Reference to the Lottie container
+    const lottieContainer = document.getElementById('lottie-animation');
+
+    // Updated Filter Checkboxes
+    const filterBarsCheckbox = document.getElementById('filterBars');
+    const filterCupasCheckbox = document.getElementById('filterCupas');
+    const filterTiendaCheckbox = document.getElementById('filterTienda');
+    const filterComidaCheckbox = document.getElementById('filterComida');
 
     // Constants and Variables
     const buttonPhrases = ["Let’s Drink Up!", "Beer Me!", "Find My Brew!", "Cheers!", "Hop to It!"];
@@ -19,10 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
         "Cenosillicaphobia is the fear of an empty beer glass.",
         "In 1814, London experienced the Great Beer Flood, releasing over 323,000 gallons of beer."
     ];
-    let beerPlaces = []; // This will hold the data from the JSON file
-    let achievements = []; // To track user achievements
-    let lottieAnimation; // Lottie animation instance
-    let clickCount = 0; // To track the number of times the button has been clicked
+    let beerPlaces = [];
+    let achievements = [];
+    let lottieAnimation;
+    let clickCount = 0;
 
     // Disable the button until data is loaded
     generateButton.disabled = true;
@@ -77,11 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Wait for 2 seconds (simulate delay)
         await new Promise(resolve => setTimeout(resolve, 2000));
 
+        // Get the values of the checkboxes
         const filterBars = filterBarsCheckbox.checked;
         const filterCupas = filterCupasCheckbox.checked;
         const filterTienda = filterTiendaCheckbox.checked;
         const filterComida = filterComidaCheckbox.checked;
 
+        // Filter the places based on the selected filters
         const filteredPlaces = beerPlaces.filter(place => {
             return (
                 (place.type === 'bars' && filterBars) ||
@@ -106,19 +111,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const whatsappUrl = `https://api.whatsapp.com/send?text=Check%20out%20this%20beer%20spot:%20${encodeURIComponent(randomPlace.name)}%20at%20${encodeURIComponent(randomPlace.address)}.%20Get%20directions%20here:%20${encodeURIComponent(googleMapsUrl)}`;
 
         resultElement.innerHTML = `
-        <div class="bar-details">
-            <p class="bar-name"><strong>${randomPlace.name}</strong></p>
-            <div class="labels">
-                <span class="label neighborhood">${randomPlace.neighborhood}</span>
-                <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
+            <div class="bar-details">
+                <p class="bar-name"><strong>${randomPlace.name}</strong></p>
+                <div class="labels">
+                    <span class="label neighborhood">${randomPlace.neighborhood}</span>
+                    <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
+                </div>
+                <p>
+                    Address: ${randomPlace.address}<br>
+                    <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a>
+                </p>
             </div>
-            <p>
-                Address: ${randomPlace.address}<br>
-                <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a>
-            </p>
-        </div>
-    `;
-    
+        `;
+
         beerFactElement.innerText = `Fun Fact: ${randomFact}`;
 
         // Unlock Achievements
@@ -136,10 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
             renderer: 'svg',
             loop: false,
             autoplay: false,
-            path: 'beer.json' // Path to your Lottie animation JSON file
+            path: 'beer.json'
         });
 
-        lottieAnimation.setSpeed(1.5); // Optional: Adjust the speed of the animation
+        lottieAnimation.setSpeed(1.5);
     }
 
     // Check and Unlock Achievements Based on Click Count
@@ -157,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (clickCount === 100) {
             unlockAchievement('hundred_clicks');
         }
-        // Add more milestones if desired
     }
 
     // Achievements System
@@ -186,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'hundred_clicks':
                 badge = createBadge('Legendary Drinker', 'fa-beer', '100 beer spots! You’re a legend!');
                 break;
-            // Add more achievements here
             default:
                 return;
         }
@@ -201,8 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return badge;
     }
 
-    // Helper Function to Capitalize First Letter
+    // Helper Function to Capitalize Each Word
     function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        return string.replace(/\b\w/g, char => char.toUpperCase());
     }
 });
