@@ -112,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <p>
                 Address: ${randomPlace.address}<br>
-                Rating: ${randomPlace.rating}<br>
                 <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a>
             </p>
         </div>
