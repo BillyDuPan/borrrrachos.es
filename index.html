@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Borrrrachos.es</title>
+    <title>Cervezabeer.es</title>
     <!-- Meta Description for SEO -->
-    <meta name="description" content="Find random beer spots in your area with Borrrrachos.es">
+    <meta name="description" content="Find random beer spots in your area with Cervezabeer.es">
     <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Borrrrachos.es">
-    <meta property="og:description" content="Find random beer spots in your area with Borrrrachos.es">
-    <meta property="og:image" content="https://borrrrachos.es/og-image.jpg">
-    <meta property="og:url" content="https://borrrrachos.es">
+    <meta property="og:title" content="Cervezabeer.es">
+    <meta property="og:description" content="Find random beer spots in your area with Cervezabeer.es">
+    <meta property="og:image" content="https://cervezabeer.es/og-image.jpg">
+    <meta property="og:url" content="https://cervezabeer.es">
     <!-- Structured Data Markup -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Borrrrachos.es",
-      "url": "https://borrrrachos.es",
-      "description": "Find random beer spots in your area with Borrrrachos.es"
+      "name": "Cervezabeer.es",
+      "url": "https://cervezabeer.es",
+      "description": "Find random beer spots in your area with Cervezabeer.es"
     }
     </script>
     <!-- Link to External CSS -->
@@ -36,22 +36,34 @@
     <div class="container">
         <!-- Main Content -->
         <main class="main-content">
-            <h1>Borrrrachos.es</h1>
+            <h1>Cervezabeer.es</h1>
+            <!-- Filters Section -->
             <div id="filters">
-                <label><input type="checkbox" id="filterBar" checked> Bars</label>
-                <label><input type="checkbox" id="filterBrewery" checked> Breweries</label>
-                <label><input type="checkbox" id="filterCraftBeer" checked> Craft Beer Shops</label>
+                <input type="checkbox" id="filterBars" checked hidden>
+                <label class="chip" for="filterBars">Bars</label>
+
+                <input type="checkbox" id="filterCupas" checked hidden>
+                <label class="chip" for="filterCupas">Cupas / Pubs</label>
+
+                <input type="checkbox" id="filterTienda" checked hidden>
+                <label class="chip" for="filterTienda">Tiendas</label>
+
+                <input type="checkbox" id="filterComida" checked hidden>
+                <label class="chip" for="filterComida">Con comida</label>
+
             </div>
-            <button id="generateButton">Generate Random Beer Spot</button>
-            <div id="fizz">🍺 Fizzzzz...</div>
+
+            <div id="lottie-animation" style="width: 200px; height: 200px; margin: 20px auto; display: none;"></div>
             <div id="result"></div>
-            <div class="beer-fact" id="beerFact"></div>
+            <button id="generateButton">Generate Random Beer Spot</button>
             <!-- Gamification Badges -->
             <div id="badges">
                 <!-- Badges will be dynamically added here -->
             </div>
-            <!-- Lottie Animation Container -->
-            <div id="lottie-animation" style="width: 200px; height: 200px;"></div>
+            <!-- Beer facts -->
+            <div class="beer-fact" id="beerFact"></div>
+            
+            
         </main>
         <!-- Footer -->
         <footer>
@@ -60,6 +72,6 @@
     </div>
 
     <!-- Audio Element -->
-    <audio id="beerSound" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
+    <audio id="beerSound" src="/beer-can.mp3"></audio>
 </body>
 </html>
