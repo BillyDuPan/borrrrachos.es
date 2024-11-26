@@ -80,6 +80,7 @@ h1 {
     margin-bottom: 20px;
     padding: 10px;
     gap: 10px;
+    width: 600px;
 }
 
 #filters::-webkit-scrollbar {
