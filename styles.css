@@ -161,18 +161,6 @@ button:disabled {
     box-shadow: var(--box-shadow);
 }
 
-.bar-details img {
-    width: 100%;
-    max-width: 400px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: transform var(--transition-speed);
-}
-
-.bar-details img:hover {
-    transform: scale(1.05);
-}
-
 .bar-details p {
     font-size: 1rem;
     line-height: 1.6;

@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Element References
-    // Removed fizzElement
     const beerSound = document.getElementById('beerSound');
     const generateButton = document.getElementById('generateButton');
     const resultElement = document.getElementById('result');
@@ -103,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resultElement.innerHTML = `
             <p class="bar-name"><strong>${randomPlace.name}</strong></p>
             <div class="bar-details">
-                <img data-src="${randomPlace.image}" alt="${randomPlace.name}" class="lazy">
                 <p>
                     Address: ${randomPlace.address}<br>
                     Rating: ${randomPlace.rating}<br>
@@ -112,9 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
         beerFactElement.innerText = `Fun Fact: ${randomFact}`;
-
-        // Lazy Load Images
-        lazyLoadImages();
 
         // Unlock Achievements
         unlockAchievement('first_generate');
@@ -135,15 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         lottieAnimation.setSpeed(1.5); // Optional: Adjust the speed of the animation
-    }
-
-    // Lazy Load Images
-    function lazyLoadImages() {
-        const lazyImages = document.querySelectorAll('.lazy');
-        lazyImages.forEach(img => {
-            img.src = img.dataset.src;
-            img.onload = () => img.classList.remove('lazy');
-        });
     }
 
     // Achievements System
