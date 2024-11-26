@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Element References
-    const fizzElement = document.getElementById('fizz');
+    // Removed fizzElement
     const beerSound = document.getElementById('beerSound');
     const generateButton = document.getElementById('generateButton');
     const resultElement = document.getElementById('result');
@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterBarCheckbox = document.getElementById('filterBar');
     const filterBreweryCheckbox = document.getElementById('filterBrewery');
     const filterCraftBeerCheckbox = document.getElementById('filterCraftBeer');
+    const lottieContainer = document.getElementById('lottie-animation'); // Reference to the Lottie container
 
     // Constants and Variables
     const buttonPhrases = ["Let’s Drink Up!", "Beer Me!", "Find My Brew!", "Cheers!", "Hop to It!"];
@@ -21,13 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     let beerPlaces = []; // This will hold the data from the JSON file
     let achievements = []; // To track user achievements
+    let lottieAnimation; // Lottie animation instance
 
     // Disable the button until data is loaded
     generateButton.disabled = true;
     generateButton.innerText = 'Loading...';
 
     // Load Lottie Animation
-    let lottieAnimation;
     loadLottieAnimation();
 
     // Fetch the data
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching beer places data:', error);
             alert('Failed to load data. Please try again later.');
             generateButton.innerText = 'Unavailable';
+            generateButton.disabled = true;
         }
     }
 
@@ -58,13 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function findBeerPlace() {
         // Play beer sound
-        beerSound.play();
+        beerSound.play().catch(error => {
+            console.error('Error playing sound:', error);
+        });
 
-        // Show fizz animation
-        fizzElement.style.display = 'block';
-
-        // Start Lottie Animation
-        lottieAnimation.play();
+        // Show Lottie animation
+        lottieContainer.style.display = 'block';
+        lottieAnimation.goToAndPlay(0, true);
 
         // Change button text
         generateButton.innerText = buttonPhrases[Math.floor(Math.random() * buttonPhrases.length)];
@@ -87,8 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check if there are any places after filtering
         if (filteredPlaces.length === 0) {
             resultElement.innerHTML = '<p>No places match your filters.</p>';
-            fizzElement.style.display = 'none';
-            lottieAnimation.stop();
+            lottieContainer.style.display = 'none';
             generateButton.innerText = 'Generate Random Beer Spot';
             return;
         }
@@ -118,9 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Unlock Achievements
         unlockAchievement('first_generate');
 
-        // Hide fizz animation and reset button text
-        fizzElement.style.display = 'none';
-        lottieAnimation.stop();
+        // Hide Lottie animation and reset button text
+        lottieContainer.style.display = 'none';
         generateButton.innerText = 'Generate Random Beer Spot';
     }
 
@@ -133,6 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
             autoplay: false,
             path: 'beer.json' // Path to your Lottie animation JSON file
         });
+
+        lottieAnimation.setSpeed(1.5); // Optional: Adjust the speed of the animation
     }
 
     // Lazy Load Images
