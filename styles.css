@@ -74,7 +74,7 @@ h1 {
 /* Filter Styles */
 #filters {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     overflow-y: auto;
     max-height: 150px; /* Adjust based on the desired height */
     margin-bottom: 20px;
