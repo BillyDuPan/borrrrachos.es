@@ -1,5 +1,3 @@
-// script.js
-
 document.addEventListener('DOMContentLoaded', () => {
     // Element References
     const fizzElement = document.getElementById('fizz');
@@ -7,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateButton = document.getElementById('generateButton');
     const resultElement = document.getElementById('result');
     const beerFactElement = document.getElementById('beerFact');
+    const badgesElement = document.getElementById('badges');
     const filterBarCheckbox = document.getElementById('filterBar');
     const filterBreweryCheckbox = document.getElementById('filterBrewery');
     const filterCraftBeerCheckbox = document.getElementById('filterCraftBeer');
@@ -21,10 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
         "In 1814, London experienced the Great Beer Flood, releasing over 323,000 gallons of beer."
     ];
     let beerPlaces = []; // This will hold the data from the JSON file
+    let achievements = []; // To track user achievements
 
     // Disable the button until data is loaded
     generateButton.disabled = true;
     generateButton.innerText = 'Loading...';
+
+    // Load Lottie Animation
+    let lottieAnimation;
+    loadLottieAnimation();
 
     // Fetch the data
     async function loadBeerPlaces() {
@@ -59,6 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show fizz animation
         fizzElement.style.display = 'block';
 
+        // Start Lottie Animation
+        lottieAnimation.play();
+
         // Change button text
         generateButton.innerText = buttonPhrases[Math.floor(Math.random() * buttonPhrases.length)];
 
@@ -81,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filteredPlaces.length === 0) {
             resultElement.innerHTML = '<p>No places match your filters.</p>';
             fizzElement.style.display = 'none';
+            lottieAnimation.stop();
             generateButton.innerText = 'Generate Random Beer Spot';
             return;
         }
@@ -93,15 +101,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
         resultElement.innerHTML = `
             <p class="bar-name"><strong>${randomPlace.name}</strong></p>
-            <img src="${randomPlace.image}" alt="${randomPlace.name}">
-            <p>Address: ${randomPlace.address}<br>
-            Rating: ${randomPlace.rating}<br>
-            <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a></p>
+            <div class="bar-details">
+                <img data-src="${randomPlace.image}" alt="${randomPlace.name}" class="lazy">
+                <p>
+                    Address: ${randomPlace.address}<br>
+                    Rating: ${randomPlace.rating}<br>
+                    <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a>
+                </p>
+            </div>
         `;
         beerFactElement.innerText = `Fun Fact: ${randomFact}`;
 
+        // Lazy Load Images
+        lazyLoadImages();
+
+        // Unlock Achievements
+        unlockAchievement('first_generate');
+
         // Hide fizz animation and reset button text
         fizzElement.style.display = 'none';
+        lottieAnimation.stop();
         generateButton.innerText = 'Generate Random Beer Spot';
+    }
+
+    // Load Lottie Animation
+    function loadLottieAnimation() {
+        lottieAnimation = lottie.loadAnimation({
+            container: document.getElementById('lottie-animation'),
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            path: 'beer.json' // Path to your Lottie animation JSON file
+        });
+    }
+
+    // Lazy Load Images
+    function lazyLoadImages() {
+        const lazyImages = document.querySelectorAll('.lazy');
+        lazyImages.forEach(img => {
+            img.src = img.dataset.src;
+            img.onload = () => img.classList.remove('lazy');
+        });
+    }
+
+    // Achievements System
+    function unlockAchievement(achievementId) {
+        if (achievements.includes(achievementId)) return;
+
+        achievements.push(achievementId);
+        let badge;
+
+        switch (achievementId) {
+            case 'first_generate':
+                badge = createBadge('First Beer!', 'fa-beer');
+                break;
+            // Add more achievements here
+            default:
+                return;
+        }
+
+        badgesElement.appendChild(badge);
+    }
+
+    function createBadge(title, iconClass) {
+        const badge = document.createElement('div');
+        badge.classList.add('badge');
+        badge.innerHTML = `<i class="fas ${iconClass}"></i> ${title}`;
+        return badge;
     }
 });
