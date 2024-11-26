@@ -37,17 +37,18 @@
         <!-- Main Content -->
         <main class="main-content">
             <h1>Cervezabeer.es</h1>
+            <!-- Filters Section -->
             <div id="filters">
-                <label class="chip">
-                    <input type="checkbox" id="filterBar" checked> Bars
-                </label>
-                <label class="chip">
-                    <input type="checkbox" id="filterBrewery" checked> Breweries
-                </label>
-                <label class="chip">
-                    <input type="checkbox" id="filterCraftBeer" checked> Craft Beer Shops
-                </label>
+                <input type="checkbox" id="filterBar" checked hidden>
+                <label class="chip" for="filterBar">Bars</label>
+
+                <input type="checkbox" id="filterBrewery" checked hidden>
+                <label class="chip" for="filterBrewery">Breweries</label>
+
+                <input type="checkbox" id="filterCraftBeer" checked hidden>
+                <label class="chip" for="filterCraftBeer">Craft Beer Shops</label>
             </div>
+
             <div id="lottie-animation" style="width: 200px; height: 200px; margin: 20px auto; display: none;"></div>
             <div id="result"></div>
             <button id="generateButton">Generate Random Beer Spot</button>

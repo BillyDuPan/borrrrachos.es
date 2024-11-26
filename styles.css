@@ -92,37 +92,31 @@ h1 {
 }
 
 .chip {
-    display: flex;
-    align-items: center;
     font-size: 1rem;
     cursor: pointer;
     background: var(--glass-bg);
+    color: var(--text-color);
     padding: 10px 15px;
     border-radius: 50px;
     backdrop-filter: var(--backdrop-filter);
     transition: background-color var(--transition-speed), color var(--transition-speed);
-}
-
-.chip input[type="checkbox"] {
-    display: none;
-}
-
-.chip input[type="checkbox"] + span {
-    margin-left: 8px;
-}
-
-.chip input[type="checkbox"]:checked + span {
-    color: var(--button-text-color);
-}
-
-.chip input[type="checkbox"]:checked {
-    background-color: var(--primary-color);
-    color: var(--button-text-color);
+    display: inline-block;
+    text-align: center;
 }
 
 .chip:hover {
     background-color: var(--secondary-color);
     color: var(--button-text-color);
+}
+
+input[type="checkbox"]:checked + label.chip {
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+}
+
+input[type="checkbox"]:not(:checked) + label.chip {
+    background-color: var(--glass-bg);
+    color: var(--text-color);
 }
 
 
