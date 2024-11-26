@@ -124,20 +124,11 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Fizz Animation Styles */
-#fizz {
-    font-size: 2rem;
-    color: var(--accent-color);
-    text-shadow: 2px 2px var(--primary-color);
-    animation: fizzAnimation 1s infinite;
-    margin-top: 20px;
-    display: none;
-}
-
-@keyframes fizzAnimation {
-    0% { transform: translateY(0); opacity: 1; }
-    50% { transform: translateY(-10px); opacity: 0.8; }
-    100% { transform: translateY(0); opacity: 1; }
+/* Lottie Animation Styles */
+#lottie-animation {
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
 }
 
 /* Result Styles */
