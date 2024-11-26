@@ -150,6 +150,7 @@ button:disabled {
 }
 
 /* Bar Details */
+
 .bar-details {
     background: var(--glass-bg);
     padding: 20px;
@@ -175,6 +176,33 @@ button:disabled {
 .bar-details a:hover {
     color: var(--button-hover-bg-color);
     text-decoration: underline;
+}
+
+/* Labels Styles */
+.labels {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.label {
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.label.neighborhood {
+    background-color: var(--secondary-color);
+}
+
+.label.category {
+    background-color: var(--accent-color);
 }
 
 /* Beer Fact Styles */
