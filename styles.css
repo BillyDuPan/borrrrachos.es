@@ -187,7 +187,7 @@ button:disabled {
 #lottie-animation {
     width: 200px;
     height: 200px;
-    margin: 20px auto;
+    margin: 0 auto; /* Centramos la animación */
 }
 
 /* Result Styles */
@@ -197,6 +197,22 @@ button:disabled {
     max-width: 600px;
     width: 100%;
     padding: 0 20px;
+    text-align: left;
+    min-height: 300px; /* Establece una altura mínima adecuada */
+    position: relative; /* Para posicionar elementos dentro si es necesario */
+}
+
+/* Centramos el contenido dentro de #result */
+#result > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ocultamos el contenido del bar mientras se muestra la animación */
+.bar-details.hidden {
+    display: none;
 }
 
 #generateButton {
@@ -258,6 +274,28 @@ button:disabled {
 
 .label.category {
     background-color: var(--accent-color);
+}
+
+/* Additional Links Styles */
+.additional-links {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.additional-links a {
+    color: var(--primary-color);
+    text-decoration: underline;
+    margin: 0 5px;
+}
+
+.additional-links a:hover {
+    color: var(--button-hover-bg-color);
+}
+
+.additional-links .separator {
+    margin: 0 5px;
+    color: var(--text-color);
 }
 
 /* Beer Fact Styles */

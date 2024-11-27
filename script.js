@@ -1,127 +1,142 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Element References
+    // Referencias de Elementos
     const beerSound = document.getElementById('beerSound');
     const generateButton = document.getElementById('generateButton');
     const resultElement = document.getElementById('result');
     const beerFactElement = document.getElementById('beerFact');
     const lottieContainer = document.getElementById('lottie-animation');
 
-    // Updated Filter Checkboxes
+    // Checkboxes de Filtros Actualizados
     const filterBarsCheckbox = document.getElementById('filterBars');
     const filterCupasCheckbox = document.getElementById('filterCupas');
     const filterTiendaCheckbox = document.getElementById('filterTienda');
     const filterComidaCheckbox = document.getElementById('filterComida');
 
-    // Constants and Variables
-    const buttonPhrases = ["Let’s Drink Up!", "Beer Me!", "Find My Brew!", "Cheers!", "Hop to It!"];
+    // Constantes y Variables
+    const buttonPhrases = [
+        "¡A beber!",
+        "¡Ponme una birra!",
+        "¡Encuentra mi birra!",
+        "¡Salud!",
+        "¡Vamos al lío!"
+    ];
+
     const teasingMessages = [
-        "Just go already!",
-        "Indecisive, aren't we?",
-        "This one is perfect for you!",
-        "Trust me, you'll love it!",
-        "Stop clicking and start drinking!",
-        "Seriously, this is the one!",
-        "Come on, give it a chance!",
-        "Are you afraid of commitment?",
-        "This place has your name on it!",
-        "Fine, one more try..."
+        "¡Venga, ve ya!",
+        "¿No te decides, eh?",
+        "¡Este es perfecto para ti!",
+        "Confía, te va a encantar.",
+        "¡Deja de hacer clic y empieza a beber!",
+        "En serio, este es el bueno.",
+        "Vamos, dale una oportunidad.",
+        "¿Miedo al compromiso?",
+        "¡Este lugar lleva tu nombre!",
+        "Vale, una más y ya..."
     ];
+
     const beerFacts = [
-        "Beer is one of the oldest drinks in the world, dating back to 5,000 BC!",
-        "The oldest known recipe for beer is over 4,000 years old, from ancient Mesopotamia!",
-        "Germany has over 1,500 different types of beer.",
-        "Cenosillicaphobia is the fear of an empty beer glass.",
-        "In 1814, London experienced the Great Beer Flood, releasing over 323,000 gallons of beer."
+        "¡La cerveza es una de las bebidas más antiguas del mundo, data del 5000 a.C.!",
+        "¡La receta más antigua de cerveza tiene más de 4000 años, de la antigua Mesopotamia!",
+        "Alemania tiene más de 1500 tipos diferentes de cerveza.",
+        "La cenosilicafobia es el miedo a un vaso de cerveza vacío.",
+        "En 1814, Londres sufrió la Gran Inundación de Cerveza, ¡liberando más de 323,000 galones!"
     ];
+
     let beerPlaces = [];
     let lottieAnimation;
     let clickCount = 0;
 
-    // Disable the button until data is loaded
+    // Desactivar el botón hasta que los datos estén cargados
     generateButton.disabled = true;
-    generateButton.innerText = 'Loading...';
+    generateButton.innerText = 'Cargando...';
 
-    // Load Lottie Animation
+    // Cargar Animación Lottie
     loadLottieAnimation();
 
-    // Fetch the data
+    // Obtener los datos
     async function loadBeerPlaces() {
         try {
             const response = await fetch('beer_places.json');
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error(`Error HTTP! Estado: ${response.status}`);
             }
             beerPlaces = await response.json();
-            // Enable the button
+            // Habilitar el botón
             generateButton.disabled = false;
-            generateButton.innerText = 'Generate Random Beer Spot';
+            generateButton.innerText = '¡Encuentra un garito!';
         } catch (error) {
-            console.error('Error fetching beer places data:', error);
-            alert('Failed to load data. Please try again later.');
-            generateButton.innerText = 'Unavailable';
+            console.error('Error al obtener los datos de los bares:', error);
+            alert('No se pudo cargar la información. Por favor, inténtalo más tarde.');
+            generateButton.innerText = 'No disponible';
             generateButton.disabled = true;
         }
     }
 
-    // Call the function to load data
+    // Llamar a la función para cargar los datos
     loadBeerPlaces();
 
-    // Event Listener for the Generate Button
+    // Evento para el Botón Generar
     generateButton.addEventListener('click', () => {
         findBeerPlace();
     });
 
     async function findBeerPlace() {
-        // Increment click count
+        // Incrementar contador de clics
         clickCount++;
 
-        // Play beer sound
+        // Reproducir sonido de cerveza
         beerSound.play().catch(error => {
-            console.error('Error playing sound:', error);
+            console.error('Error al reproducir el sonido:', error);
         });
 
-        // Show Lottie animation
+        // Mostrar animación Lottie y ocultar el contenido actual
         lottieContainer.style.display = 'block';
-        lottieAnimation.goToAndPlay(0, true);
+        const barDetails = resultElement.querySelector('.bar-details');
+        if (barDetails) {
+            barDetails.remove(); // Eliminamos el contenido anterior
+        }
 
-        // Change button text based on click count
+        // Cambiar texto del botón según el número de clics
         if (clickCount <= buttonPhrases.length) {
             generateButton.innerText = buttonPhrases[clickCount - 1];
         } else {
             generateButton.innerText = teasingMessages[(clickCount - buttonPhrases.length - 1) % teasingMessages.length];
         }
 
-        // Wait for 2 seconds (simulate delay)
+        // Reproducir animación desde el inicio
+        lottieAnimation.goToAndPlay(0, true);
+
+        // Esperar 2 segundos (simular retraso)
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-        // Get the values of the checkboxes
+        // Obtener los valores de los checkboxes
         const filterBars = filterBarsCheckbox.checked;
         const filterCupas = filterCupasCheckbox.checked;
         const filterTienda = filterTiendaCheckbox.checked;
         const filterComida = filterComidaCheckbox.checked;
 
-        // Filter the places based on the selected filters
+        // Filtrar los lugares según los filtros seleccionados
         let filteredPlaces = beerPlaces.filter(place => {
             return (
-                (place.type === 'bars' && filterBars) ||
-                (place.type === 'cupas / pubs' && filterCupas) ||
-                (place.type === 'tienda' && filterTienda) ||
+                (place.type === 'bares' && filterBars) ||
+                (place.type === 'copas / pubs' && filterCupas) ||
+                (place.type === 'tiendas' && filterTienda) ||
                 (place.type === 'con comida' && filterComida)
             );
         });
 
-        // Implement decreasing randomness
+        // Implementar disminución de aleatoriedad
         if (clickCount > 3) {
-            // After 3 clicks, limit the suggestions to a smaller subset
+            // Después de 3 clics, limitar las sugerencias a un subconjunto más pequeño
             const limit = Math.max(1, Math.floor(filteredPlaces.length / clickCount));
             filteredPlaces = filteredPlaces.slice(0, limit);
         }
 
-        // Check if there are any places after filtering
+        // Verificar si hay lugares después de filtrar
         if (filteredPlaces.length === 0) {
-            resultElement.innerHTML = '<p>No places match your filters.</p>';
+            resultElement.innerHTML = '<p>No hay lugares que coincidan con tus filtros.</p>';
             lottieContainer.style.display = 'none';
-            generateButton.innerText = 'Try Adjusting Your Filters';
+            generateButton.innerText = 'Prueba a ajustar tus filtros';
             return;
         }
 
@@ -129,32 +144,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomFact = beerFacts[Math.floor(Math.random() * beerFacts.length)];
 
         const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(randomPlace.address)}`;
-        const whatsappUrl = `https://api.whatsapp.com/send?text=Check%20out%20this%20spot:%20${encodeURIComponent(randomPlace.name)}%20at%20${encodeURIComponent(randomPlace.address)}.%20Get%20directions%20here:%20${encodeURIComponent(googleMapsUrl)}`;
+        const whatsappUrl = `https://api.whatsapp.com/send?text=¡Mira este sitio!: ${encodeURIComponent(randomPlace.name)} en ${encodeURIComponent(randomPlace.address)}. Cómo llegar: ${encodeURIComponent(googleMapsUrl)}`;
 
-        resultElement.innerHTML = `
-            <div class="bar-details">
-                <p class="bar-name"><strong>${randomPlace.name}</strong></p>
-                <div class="labels">
-                    <span class="label neighborhood">${randomPlace.neighborhood}</span>
-                    <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
-                </div>
-                <p class="bar-address">
-                    ${randomPlace.address}
-                </p>
-                <div class="button-group">
-                    <a href="${googleMapsUrl}" target="_blank" class="button"><i class="fas fa-map-marker-alt"></i>Directions</a>
-                    <a href="${whatsappUrl}" target="_blank" class="button"><i class="fab fa-whatsapp"></i>Share</a>
-                </div>
+        // Crear el elemento de detalles del bar
+        const barDetailsElement = document.createElement('div');
+        barDetailsElement.classList.add('bar-details');
+
+        barDetailsElement.innerHTML = `
+            <p class="bar-name"><strong>${randomPlace.name}</strong></p>
+            <div class="labels">
+                <span class="label neighborhood">${randomPlace.neighborhood}</span>
+                <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
+            </div>
+            <p class="bar-address">
+                ${randomPlace.address}
+            </p>
+            <div class="button-group">
+                <a href="${googleMapsUrl}" target="_blank" class="button"><i class="fas fa-map-marker-alt"></i>Cómo llegar</a>
+                <a href="${whatsappUrl}" target="_blank" class="button"><i class="fab fa-whatsapp"></i>Compartir</a>
             </div>
         `;
 
-        beerFactElement.innerText = `Fun Fact: ${randomFact}`;
-
-        // Hide Lottie animation
+        // Ocultar la animación y mostrar el contenido del bar
         lottieContainer.style.display = 'none';
+        resultElement.appendChild(barDetailsElement);
+
+        // Actualizar el dato curioso
+        beerFactElement.innerText = `Dato curioso: ${randomFact}`;
     }
 
-    // Load Lottie Animation
+    // Cargar Animación Lottie
     function loadLottieAnimation() {
         lottieAnimation = lottie.loadAnimation({
             container: document.getElementById('lottie-animation'),
@@ -167,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lottieAnimation.setSpeed(1.5);
     }
 
-    // Helper Function to Capitalize Each Word
+    // Función para Capitalizar Cada Palabra
     function capitalizeFirstLetter(string) {
         return string.replace(/\b\w/g, char => char.toUpperCase());
     }

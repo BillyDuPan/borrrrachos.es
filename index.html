@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cervezabeer.es</title>
     <!-- Meta Description for SEO -->
-    <meta name="description" content="Find random beer spots in your area with Cervezabeer.es">
+    <meta name="description" content="Encuentra bares aleatorios en tu zona con Cervezabeer.es">
     <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Cervezabeer.es">
-    <meta property="og:description" content="Find random beer spots in your area with Cervezabeer.es">
+    <meta property="og:description" content="Encuentra bares aleatorios en tu zona con Cervezabeer.es">
     <meta property="og:image" content="https://cervezabeer.es/og-image.jpg">
     <meta property="og:url" content="https://cervezabeer.es">
     <!-- Structured Data Markup -->
@@ -20,58 +20,62 @@
       "@type": "WebSite",
       "name": "Cervezabeer.es",
       "url": "https://cervezabeer.es",
-      "description": "Find random beer spots in your area with Cervezabeer.es"
+      "description": "Encuentra bares aleatorios en tu zona con Cervezabeer.es"
     }
     </script>
-    <!-- Link to External CSS -->
+    <!-- Enlace al CSS Externo -->
     <link rel="stylesheet" href="styles.css">
-    <!-- Link to Font Awesome for Icons -->
+    <!-- Enlace a Font Awesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous">
-    <!-- Lottie Script (Include BEFORE your script.js) -->
+    <!-- Script de Lottie (Incluir ANTES de tu script.js) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js" crossorigin="anonymous"></script>
-    <!-- Main JavaScript (Include AFTER lottie.min.js) -->
+    <!-- JavaScript Principal (Incluir DESPUÉS de lottie.min.js) -->
     <script src="script.js"></script>
 </head>
 <body>
     <div class="container">
-        <!-- Main Content -->
+        <!-- Contenido Principal -->
         <main class="main-content">
             <h1>Cervezabeer.es</h1>
-            <!-- Filters Section -->
-            <!-- Filters Section -->
-                <div id="filters">
-                    <input type="checkbox" id="filterBars" checked hidden>
-                    <label class="chip" for="filterBars">🍻 Bars</label>
+            <!-- Sección de Filtros -->
+            <div id="filters">
+                <input type="checkbox" id="filterBars" checked hidden>
+                <label class="chip" for="filterBars">🍻 Bares</label>
 
-                    <input type="checkbox" id="filterCupas" checked hidden>
-                    <label class="chip" for="filterCupas">🍷 Cupas / Pubs</label>
+                <input type="checkbox" id="filterCupas" checked hidden>
+                <label class="chip" for="filterCupas">🍷 Copas / Pubs</label>
 
-                    <input type="checkbox" id="filterTienda" checked hidden>
-                    <label class="chip" for="filterTienda">🛍️ Tiendas</label>
+                <input type="checkbox" id="filterTienda" checked hidden>
+                <label class="chip" for="filterTienda">🛍️ Tiendas</label>
 
-                    <input type="checkbox" id="filterComida" checked hidden>
-                    <label class="chip" for="filterComida">🍽️ Con comida</label>
-                </div>
-
-            <div id="lottie-animation" style="width: 200px; height: 200px; margin: 20px auto; display: none;"></div>
-            <div id="result"></div>
-            <button id="generateButton">Generate Random Beer Spot</button>
-            <!-- Gamification Badges -->
-            <div id="badges">
-                <!-- Badges will be dynamically added here -->
+                <input type="checkbox" id="filterComida" checked hidden>
+                <label class="chip" for="filterComida">🍽️ Con comida</label>
             </div>
-            <!-- Beer facts -->
+            
+            <div id="result">
+                <div id="lottie-animation" style="width: 200px; height: 200px; margin: 20px auto; display: none;"></div>
+            </div>
+
+            <!-- Enlaces Adicionales -->
+            <div class="additional-links">
+                <a href="https://donate.stripe.com/14k5o4d0fdYr0x228c" target="_blank">¿Nos invitas a una birra?</a>
+                <span class="separator">|</span>
+                <a href="https://api.whatsapp.com/send?text=¡Échale%20un%20ojo%20a%20esta%20app%20que%20encontré!%20cervezabeer.es%20¡Deberíamos%20probarla!" target="_blank">Comparte esta app</a>
+            </div>
+
+            <!-- Botón Generar -->
+            <button id="generateButton">¡Encuentra un garito!</button>
+
+            <!-- Hechos Sobre la Cerveza -->
             <div class="beer-fact" id="beerFact"></div>
-            
-            
         </main>
-        <!-- Footer -->
+        <!-- Pie de Página -->
         <footer>
-            <p>Created by <a href="https://trooper.es" target="_blank" rel="noopener noreferrer">Trooper</a></p>
+            <p>Creado por <a href="https://trooper.es" target="_blank" rel="noopener noreferrer">Trooper</a></p>
         </footer>
     </div>
 
-    <!-- Audio Element -->
+    <!-- Elemento de Audio -->
     <audio id="beerSound" src="/beer-can.mp3"></audio>
 </body>
 </html>
