@@ -58,7 +58,7 @@ body {
     backdrop-filter: var(--backdrop-filter);
     background: var(--glass-bg);
     border-radius: var(--border-radius);
-    margin: 20px;
+    margin: 5px;
     box-shadow: var(--box-shadow);
 }
 
@@ -280,7 +280,7 @@ button:disabled {
 .additional-links {
     margin-top: 15px;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
 }
 
 .additional-links a {
@@ -362,6 +362,10 @@ footer a:hover {
 
 /* Media Queries */
 @media (min-width: 600px) {
+    h1 {
+        font-size: 3rem;
+    }
+    
     #filters {
         gap: 20px;
     }
