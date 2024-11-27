@@ -137,20 +137,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Filter the places based on the selected filters
         let filteredPlaces = beerPlaces.filter(place => {
             return (
-                (place.type === 'bares' && filterBars) ||
-                (place.type === 'copas / pubs' && filterCupas) ||
-                (place.type === 'tiendas' && filterTienda) ||
+                (place.type === 'bars' && filterBars) ||
+                (place.type === 'cupas / pubs' && filterCupas) ||
+                (place.type === 'tienda' && filterTienda) ||
                 (place.type === 'con comida' && filterComida)
             );
         });
 
-        // Implement decreasing randomness
-        if (clickCount > 3) {
-            // After 3 clicks, limit suggestions to a smaller subset
-            const limit = Math.max(1, Math.floor(filteredPlaces.length / clickCount));
-            filteredPlaces = filteredPlaces.slice(0, limit);
-        }
-
+        
         // Check if there are any places after filtering
         if (filteredPlaces.length === 0) {
             errorMessageElement.innerHTML = '<p>No hay lugares que coincidan con tus filtros.</p>';
