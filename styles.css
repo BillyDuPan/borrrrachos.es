@@ -87,8 +87,8 @@ h1 {
 }
 
 #filters::-webkit-scrollbar-thumb {
-    background-color: var(--primary-color);
-    border-radius: 10px;
+    background-color: var(--glass-bg);
+    border-radius: 15px;
 }
 
 input[type="checkbox"] {
@@ -97,12 +97,14 @@ input[type="checkbox"] {
 
 .chip {
     flex: 0 0 auto; /* Prevent chips from shrinking or growing */
-    font-size: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
     background: var(--glass-bg);
     color: var(--text-color);
-    padding: 10px 15px;
+    padding: 8px 10px;
     border-radius: 50px;
+    border:white 2px solid;
     backdrop-filter: var(--backdrop-filter);
     transition: background-color var(--transition-speed), color var(--transition-speed);
     display: inline-block;
@@ -116,17 +118,15 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked + label.chip {
-    background-color: var(--primary-color);
-    color: var(--button-text-color);
+    border: #000000 2px solid;
 }
 
 input[type="checkbox"]:not(:checked) + label.chip {
-    background-color: var(--light-gray);
-    color: var(--text-color);
+    background-color: var(--glass-bg);
+    color:darkgray;
 }
 
-
-/* Button Styles */
+/*general buttons*/
 button {
     padding: 15px 30px;
     font-size: 1.1rem;
@@ -149,6 +149,40 @@ button:disabled {
     cursor: not-allowed;
 }
 
+/* .button Class Styles */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: var(--glass-bg);
+    color:var(--primary-color);
+    text-decoration: none;
+    border-radius: 50px;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+    font-size: 1rem;
+    margin: 5px;
+    box-shadow: var(--box-shadow);
+}
+
+.button i {
+    margin-right: 8px;
+}
+
+.button:hover {
+    background-color: var(--button-hover-bg-color);
+    transform: translateY(-2px);
+}
+
+/* Button Group Styles */
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+    margin-top: 15px;
+}
+
 /* Lottie Animation Styles */
 #lottie-animation {
     width: 200px;
@@ -163,7 +197,6 @@ button:disabled {
     max-width: 600px;
     width: 100%;
     padding: 0 20px;
-    text-align: left;
 }
 
 #generateButton {
@@ -190,23 +223,14 @@ button:disabled {
     text-align: center;
 }
 
+.bar-adress  {
+    text-align: center;
+    text-transform: capitalize;
+}
+
 .bar-details p {
     font-size: 1rem;
     line-height: 1.6;
-}
-
-.bar-details a {
-    display: inline-block;
-    margin-top: 10px;
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: bold;
-    transition: color var(--transition-speed);
-}
-
-.bar-details a:hover {
-    color: var(--button-hover-bg-color);
-    text-decoration: underline;
 }
 
 /* Labels Styles */

@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateButton = document.getElementById('generateButton');
     const resultElement = document.getElementById('result');
     const beerFactElement = document.getElementById('beerFact');
-    const badgesElement = document.getElementById('badges');
     const lottieContainer = document.getElementById('lottie-animation');
 
     // Updated Filter Checkboxes
@@ -15,6 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Constants and Variables
     const buttonPhrases = ["Let’s Drink Up!", "Beer Me!", "Find My Brew!", "Cheers!", "Hop to It!"];
+    const teasingMessages = [
+        "Just go already!",
+        "Indecisive, aren't we?",
+        "This one is perfect for you!",
+        "Trust me, you'll love it!",
+        "Stop clicking and start drinking!",
+        "Seriously, this is the one!",
+        "Come on, give it a chance!",
+        "Are you afraid of commitment?",
+        "This place has your name on it!",
+        "Fine, one more try..."
+    ];
     const beerFacts = [
         "Beer is one of the oldest drinks in the world, dating back to 5,000 BC!",
         "The oldest known recipe for beer is over 4,000 years old, from ancient Mesopotamia!",
@@ -23,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         "In 1814, London experienced the Great Beer Flood, releasing over 323,000 gallons of beer."
     ];
     let beerPlaces = [];
-    let achievements = [];
     let lottieAnimation;
     let clickCount = 0;
 
@@ -74,8 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
         lottieContainer.style.display = 'block';
         lottieAnimation.goToAndPlay(0, true);
 
-        // Change button text
-        generateButton.innerText = buttonPhrases[Math.floor(Math.random() * buttonPhrases.length)];
+        // Change button text based on click count
+        if (clickCount <= buttonPhrases.length) {
+            generateButton.innerText = buttonPhrases[clickCount - 1];
+        } else {
+            generateButton.innerText = teasingMessages[(clickCount - buttonPhrases.length - 1) % teasingMessages.length];
+        }
 
         // Wait for 2 seconds (simulate delay)
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -87,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterComida = filterComidaCheckbox.checked;
 
         // Filter the places based on the selected filters
-        const filteredPlaces = beerPlaces.filter(place => {
+        let filteredPlaces = beerPlaces.filter(place => {
             return (
                 (place.type === 'bars' && filterBars) ||
                 (place.type === 'cupas / pubs' && filterCupas) ||
@@ -96,11 +110,18 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         });
 
+        // Implement decreasing randomness
+        if (clickCount > 3) {
+            // After 3 clicks, limit the suggestions to a smaller subset
+            const limit = Math.max(1, Math.floor(filteredPlaces.length / clickCount));
+            filteredPlaces = filteredPlaces.slice(0, limit);
+        }
+
         // Check if there are any places after filtering
         if (filteredPlaces.length === 0) {
             resultElement.innerHTML = '<p>No places match your filters.</p>';
             lottieContainer.style.display = 'none';
-            generateButton.innerText = 'Generate Random Beer Spot';
+            generateButton.innerText = 'Try Adjusting Your Filters';
             return;
         }
 
@@ -108,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomFact = beerFacts[Math.floor(Math.random() * beerFacts.length)];
 
         const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(randomPlace.address)}`;
-        const whatsappUrl = `https://api.whatsapp.com/send?text=Check%20out%20this%20beer%20spot:%20${encodeURIComponent(randomPlace.name)}%20at%20${encodeURIComponent(randomPlace.address)}.%20Get%20directions%20here:%20${encodeURIComponent(googleMapsUrl)}`;
+        const whatsappUrl = `https://api.whatsapp.com/send?text=Check%20out%20this%20spot:%20${encodeURIComponent(randomPlace.name)}%20at%20${encodeURIComponent(randomPlace.address)}.%20Get%20directions%20here:%20${encodeURIComponent(googleMapsUrl)}`;
 
         resultElement.innerHTML = `
             <div class="bar-details">
@@ -117,21 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="label neighborhood">${randomPlace.neighborhood}</span>
                     <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
                 </div>
-                <p>
-                    Address: ${randomPlace.address}<br>
-                    <a href="${googleMapsUrl}" target="_blank">Get Directions</a> | <a href="${whatsappUrl}" target="_blank">Share on WhatsApp</a>
+                <p class="bar-address">
+                    ${randomPlace.address}
                 </p>
+                <div class="button-group">
+                    <a href="${googleMapsUrl}" target="_blank" class="button"><i class="fas fa-map-marker-alt"></i>Directions</a>
+                    <a href="${whatsappUrl}" target="_blank" class="button"><i class="fab fa-whatsapp"></i>Share</a>
+                </div>
             </div>
         `;
 
         beerFactElement.innerText = `Fun Fact: ${randomFact}`;
 
-        // Unlock Achievements
-        checkAchievements();
-
-        // Hide Lottie animation and reset button text
+        // Hide Lottie animation
         lottieContainer.style.display = 'none';
-        generateButton.innerText = 'Generate Random Beer Spot';
     }
 
     // Load Lottie Animation
@@ -145,63 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         lottieAnimation.setSpeed(1.5);
-    }
-
-    // Check and Unlock Achievements Based on Click Count
-    function checkAchievements() {
-        if (clickCount === 1) {
-            unlockAchievement('first_generate');
-        } else if (clickCount === 5) {
-            unlockAchievement('five_clicks');
-        } else if (clickCount === 10) {
-            unlockAchievement('ten_clicks');
-        } else if (clickCount === 20) {
-            unlockAchievement('twenty_clicks');
-        } else if (clickCount === 50) {
-            unlockAchievement('fifty_clicks');
-        } else if (clickCount === 100) {
-            unlockAchievement('hundred_clicks');
-        }
-    }
-
-    // Achievements System
-    function unlockAchievement(achievementId) {
-        if (achievements.includes(achievementId)) return;
-
-        achievements.push(achievementId);
-        let badge;
-
-        switch (achievementId) {
-            case 'first_generate':
-                badge = createBadge('First Beer!', 'fa-beer', 'Congrats on your first beer spot!');
-                break;
-            case 'five_clicks':
-                badge = createBadge('Thirsty Traveler', 'fa-beer', '5 beer spots found! Keep it flowing!');
-                break;
-            case 'ten_clicks':
-                badge = createBadge('Beer Enthusiast', 'fa-beer', '10 beer spots? You’re on a roll!');
-                break;
-            case 'twenty_clicks':
-                badge = createBadge('Pub Crawler', 'fa-beer', '20 beer spots! The night is young!');
-                break;
-            case 'fifty_clicks':
-                badge = createBadge('Bottomless Mug', 'fa-beer', '50 beer spots! Is there no end to your thirst?');
-                break;
-            case 'hundred_clicks':
-                badge = createBadge('Legendary Drinker', 'fa-beer', '100 beer spots! You’re a legend!');
-                break;
-            default:
-                return;
-        }
-
-        badgesElement.appendChild(badge);
-    }
-
-    function createBadge(title, iconClass, description) {
-        const badge = document.createElement('div');
-        badge.classList.add('badge');
-        badge.innerHTML = `<i class="fas ${iconClass}"></i> ${title}<br><small>${description}</small>`;
-        return badge;
     }
 
     // Helper Function to Capitalize Each Word
