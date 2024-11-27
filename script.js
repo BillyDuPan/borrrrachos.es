@@ -5,9 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultElement = document.getElementById('result');
     const beerFactElement = document.getElementById('beerFact');
     const lottieContainer = document.getElementById('lottie-animation');
-    const errorMessageElement = document.getElementById('error-message'); // New error message element
+    const errorMessageElement = document.getElementById('error-message'); // Error message element
 
-    // Updated Filter Checkboxes
+    // Modal Elements
+    const instructionModal = document.getElementById('instruction-modal');
+    const closeModalButton = document.getElementById('close-modal');
+
+    // Filter Checkboxes
     const filterBarsCheckbox = document.getElementById('filterBars');
     const filterCupasCheckbox = document.getElementById('filterCupas');
     const filterTiendaCheckbox = document.getElementById('filterTienda');
@@ -87,6 +91,31 @@ document.addEventListener('DOMContentLoaded', () => {
     filterTiendaCheckbox.addEventListener('change', updateErrorMessage);
     filterComidaCheckbox.addEventListener('change', updateErrorMessage);
 
+    // Show instruction modal when the app opens
+    showInstructionModal();
+
+    // Function to show the instruction modal
+    function showInstructionModal() {
+        instructionModal.style.display = 'grid'; // Ensure it's displayed as grid
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
+        // When the user clicks on the close button, hide the modal
+        closeModalButton.addEventListener('click', hideInstructionModal);
+
+        // Optional: Hide the modal when the user clicks outside of the modal content
+        window.addEventListener('click', (event) => {
+            if (event.target === instructionModal) {
+                hideInstructionModal();
+            }
+        });
+    }
+
+    // Function to hide the instruction modal
+    function hideInstructionModal() {
+        instructionModal.style.display = 'none';
+        document.body.style.overflow = ''; // Restore background scrolling
+    }
+
     // Call updateErrorMessage on page load
     updateErrorMessage();
 
@@ -137,14 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Filter the places based on the selected filters
         let filteredPlaces = beerPlaces.filter(place => {
             return (
-                (place.type === 'bars' && filterBars) ||
-                (place.type === 'cupas / pubs' && filterCupas) ||
-                (place.type === 'tienda' && filterTienda) ||
+                (place.type === 'bares' && filterBars) ||
+                (place.type === 'copas / pubs' && filterCupas) ||
+                (place.type === 'tiendas' && filterTienda) ||
                 (place.type === 'con comida' && filterComida)
             );
         });
 
-        
         // Check if there are any places after filtering
         if (filteredPlaces.length === 0) {
             errorMessageElement.innerHTML = '<p>No hay lugares que coincidan con tus filtros.</p>';
@@ -158,8 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomPlace = filteredPlaces[Math.floor(Math.random() * filteredPlaces.length)];
         const randomFact = beerFacts[Math.floor(Math.random() * beerFacts.length)];
 
-        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(randomPlace.address)}`;
-        const whatsappUrl = `https://api.whatsapp.com/send?text=¡Mira este sitio!: ${encodeURIComponent(randomPlace.name)} en ${encodeURIComponent(randomPlace.address)}. Cómo llegar: ${encodeURIComponent(googleMapsUrl)}`;
+        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${randomPlace.name} ${randomPlace.address}`)}`;
+        const whatsappUrl = `https://api.whatsapp.com/send?text=¡Mira%20este%20sitio!:%20${encodeURIComponent(randomPlace.name)}%20en%20${encodeURIComponent(randomPlace.address)}.%20Cómo%20llegar:%20${encodeURIComponent(googleMapsUrl)}`;
 
         // Create the bar details element
         const barDetailsElement = document.createElement('div');

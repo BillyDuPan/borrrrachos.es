@@ -140,7 +140,8 @@ button {
 }
 
 button:hover {
-    background-color: var(--button-hover-bg-color);
+    background-color: var(--accent-color);
+    color: var(--primary-color);
     transform: translateY(-4px);
 }
 
@@ -171,6 +172,7 @@ button:disabled {
 
 .button:hover {
     background-color: var(--button-hover-bg-color);
+    color: var(--button-text-color);
     transform: translateY(-2px);
 }
 
@@ -274,6 +276,7 @@ button:disabled {
 
 .label.category {
     background-color: var(--accent-color);
+    color: var(--primary-color);
 }
 
 /* Additional Links Styles */
@@ -339,6 +342,46 @@ button:disabled {
 .badge:hover {
     transform: translateY(-2px);
 }
+
+/* Modal Styles */
+.modal {
+    display: grid; /* Use Grid layout for centering */
+    place-items: center; /* Center content horizontally and vertically */
+    position: fixed;
+    z-index: 1000; /* Ensure it's above other elements */
+    inset: 0; /* Shorthand for top: 0; right: 0; bottom: 0; left: 0; */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+}
+
+.modal-content {
+    background-color: var(--primary-color);
+    padding: 20px;
+    border: 1px solid var(--secondary-color);
+    width: 80%;
+    max-width: 500px;
+    border-radius: var(--border-radius);
+    color: var(--button-text-color);
+    text-align: center;
+    position: relative; /* Ensure it's positioned relative to .modal */
+}
+
+.close-button {
+    color: var(--button-text-color);
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--accent-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
 
 /* Footer Styles */
 footer {

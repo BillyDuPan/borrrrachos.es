@@ -60,6 +60,9 @@
                 <div id="lottie-animation" style="width: 200px; height: 200px; margin: 20px auto; display: none;"></div>
             </div>
 
+            <!-- Botón Generar -->
+            <button id="generateButton">¡Encuentra un garito!</button>
+
             <!-- Enlaces Adicionales -->
             <div class="additional-links">
                 <a href="https://donate.stripe.com/14k5o4d0fdYr0x228c" target="_blank">¿Nos invitas a una birra?</a>
@@ -67,8 +70,7 @@
                 <a href="https://api.whatsapp.com/send?text=¡Échale%20un%20ojo%20a%20esta%20app%20que%20encontré!%20cervezabeer.es%20¡Deberíamos%20probarla!" target="_blank">Comparte esta app</a>
             </div>
 
-            <!-- Botón Generar -->
-            <button id="generateButton">¡Encuentra un garito!</button>
+            
 
             <!-- Hechos Sobre la Cerveza -->
             <div class="beer-fact" id="beerFact"></div>
@@ -78,6 +80,17 @@
             <p>Creado por <a href="https://trooper.es" target="_blank" rel="noopener noreferrer">Trooper</a></p>
         </footer>
     </div>
+        <!-- Instruction Modal -->
+        <div id="instruction-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="close-modal">&times;</span>
+                <h2>¡Hola!</h2>
+                <p>
+                    Nos ayudamos a encontrar random lugares donde hay cerveza en Barcelona. Todos los filtros están activados por defecto, puedes desactivar los que prefieras. Luego, simplemente haz clic en el botón de abajo para empezar a descubrir tu próximo cerveza.
+                </p>
+                <p>¡Salud!</p>
+            </div>
+        </div>
 
     <!-- Elemento de Audio -->
     <audio id="beerSound" src="/beer-bottle-open.mp3"></audio>
