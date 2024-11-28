@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         barDetailsElement.innerHTML = `
             <p class="bar-name"><strong>${randomPlace.name}</strong></p>
             <div class="labels">
-                <span class="label neighborhood">${randomPlace.neighborhood}</span>
+                <span class="label neighborhood">📍 ${randomPlace.neighborhood}</span>
                 <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
             </div>
             <p class="bar-address">
