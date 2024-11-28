@@ -166,10 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Filter the places based on the selected filters
         let filteredPlaces = beerPlaces.filter(place => {
             return (
-                (place.type === 'bares' && filterBars) ||
-                (place.type === 'copas / pubs' && filterCupas) ||
-                (place.type === 'tiendas' && filterTienda) ||
-                (place.type === 'con comida' && filterComida)
+                (place.type === '🍻 bares' && filterBars) ||
+                (place.type === '🍷 copas / pubs' && filterCupas) ||
+                (place.type === '🛒 tiendas' && filterTienda) ||
+                (place.type === '🍽️ Restaurantes' && filterComida)
             );
         });
 
