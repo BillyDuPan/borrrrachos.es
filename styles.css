@@ -66,10 +66,14 @@ body {
 h1 {
     font-weight: 700;
     font-size: clamp(2.5rem, 5vw, 4rem);
-    margin-bottom: 20px;
     color: var(--primary-color);
     text-shadow: 2px 2px rgba(0, 0, 0, 0.1);
 }
+
+.subtitle {
+    font-size: 1rem;
+}
+
 
 /* Hidden Checkbox */
 input[type="checkbox"] {
