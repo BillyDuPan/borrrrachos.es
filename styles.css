@@ -101,12 +101,11 @@ input[type="checkbox"] {
     font-weight: 600;
     cursor: pointer;
     background: var(--glass-bg);
-    color: var(--text-color);
+    color: var(--primary-color);
     padding: 8px 10px;
-    border-radius: 50px;
-    border:white 2px solid;
+    border-radius: var(--border-radius);
     backdrop-filter: var(--backdrop-filter);
-    transition: background-color var(--transition-speed), color var(--transition-speed);
+    transition: opacity var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
     display: inline-block;
     text-align: center;
     white-space: nowrap; /* Prevent text from wrapping within the chip */
@@ -115,6 +114,7 @@ input[type="checkbox"] {
 .chip:hover {
     background-color: var(--secondary-color);
     color: var(--button-text-color);
+    transform: translateY(-2px);
 }
 
 input[type="checkbox"]:checked + label.chip {
@@ -122,8 +122,7 @@ input[type="checkbox"]:checked + label.chip {
 }
 
 input[type="checkbox"]:not(:checked) + label.chip {
-    background-color: var(--glass-bg);
-    color:darkgray;
+    opacity: 40%;
 }
 
 /*general buttons*/
