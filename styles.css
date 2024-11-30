@@ -9,7 +9,7 @@
     --button-bg-color: var(--primary-color);
     --button-text-color: #fff;
     --button-hover-bg-color: var(--secondary-color);
-    --border-radius: 16px;
+    --border-radius: 50px;
     --transition-speed: 0.3s;
     --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     --glass-bg: rgba(255, 255, 255, 0.2);
@@ -156,9 +156,10 @@ button:disabled {
     align-items: center;
     justify-content: center;
     padding: 10px 20px;
-    background-color: var(--glass-bg);
-    color:var(--primary-color);
+    background-color: var(--primary-color);
+    color:var(--button-text-color);
     text-decoration: none;
+    border: 2px solid black;
     border-radius: 50px;
     transition: background-color var(--transition-speed), transform var(--transition-speed);
     font-size: 1rem;
@@ -171,8 +172,8 @@ button:disabled {
 }
 
 .button:hover {
-    background-color: var(--button-hover-bg-color);
-    color: var(--button-text-color);
+    background-color: var(--glass-bg);
+    color: var(--primary-color);
     transform: translateY(-2px);
 }
 
@@ -183,6 +184,13 @@ button:disabled {
     align-items: center;
     flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
     margin-top: 15px;
+}
+
+.filter-button {
+    position: absolute;
+    top: 30px;
+    background: var(--glass-bg);
+    color: var(--primary-color);
 }
 
 /* Lottie Animation Styles */
@@ -271,11 +279,12 @@ button:disabled {
 }
 
 .label.neighborhood {
-    background-color: var(--secondary-color);
+    background-color: var(--glass-bg);
+    color: var(--primary-color);
 }
 
 .label.category {
-    background-color: var(--accent-color);
+    background-color: var(--glass-bg);
     color: var(--primary-color);
 }
 
