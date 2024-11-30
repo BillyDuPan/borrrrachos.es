@@ -56,10 +56,6 @@ body {
     justify-content: center;
     padding: 20px;
     text-align: center;
-    backdrop-filter: var(--backdrop-filter);
-    border-radius: var(--border-radius);
-    margin: 5px;
-    box-shadow: var(--box-shadow);
 }
 
 /* Header Styles */
@@ -172,10 +168,14 @@ button:disabled {
     margin-top: 15px;
 }
 
+/* Filter Button Container */
+.filter-button-container {
+    text-align: right;
+    margin: 20px;
+}
+
 /* Filter Button */
 .filter-button {
-    position: absolute;
-    top: 30px;
     background: var(--glass-bg);
     color: var(--primary-color);
     border: var(--button-border);
@@ -189,6 +189,7 @@ button:disabled {
     color: var(--button-hover-color);
     transform: translateY(-2px);
 }
+
 
 /* Lottie Animation */
 #lottie-animation {
@@ -546,27 +547,50 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* Media Queries */
-@media (min-width: 600px) {
+/* Adjustments for small devices */
+@media (max-width: 599px) {
     h1 {
-        font-size: 3rem;
+        font-size: 2rem;
+    }
+    .button, .label, #filter-modal .modal-button, #filter-modal .chip, .filter-button {
+        font-size: 0.8rem;
+    }
+    .bar-details .bar-name {
+        font-size: 1.5rem;
+    }
+    .beer-fact {
+        font-size: 0.875rem;
     }
 }
 
+/* Adjustments for medium devices */
+@media (min-width: 600px) and (max-width: 899px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    button {
+        font-size: 1rem;
+    }
+    .bar-details .bar-name {
+        font-size: 2rem;
+    }
+    .beer-fact {
+        font-size: 1rem;
+    }
+}
+
+/* Adjustments for large devices */
 @media (min-width: 900px) {
     h1 {
-        font-size: 4rem;
+        font-size: 3rem;
     }
-
     button {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
-
     .bar-details .bar-name {
         font-size: 2.5rem;
     }
-
     .beer-fact {
-        font-size: 1.1rem;
+        font-size: 1.125rem;
     }
 }
