@@ -1,21 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Element References
-    const beerSound = document.getElementById('beerSound');
-    const generateButton = document.getElementById('generateButton');
-    const resultElement = document.getElementById('result');
-    const beerFactElement = document.getElementById('beerFact');
-    const lottieContainer = document.getElementById('lottie-animation');
-    const errorMessageElement = document.getElementById('error-message'); // Error message element
-
-    // Modal Elements
-    const instructionModal = document.getElementById('instruction-modal');
-    const closeModalButton = document.getElementById('close-modal');
-
-    // Filter Checkboxes
-    const filterBarsCheckbox = document.getElementById('filterBars');
-    const filterCupasCheckbox = document.getElementById('filterCupas');
-    const filterTiendaCheckbox = document.getElementById('filterTienda');
-    const filterComidaCheckbox = document.getElementById('filterComida');
+    const elements = {
+        beerSound: document.getElementById('beerSound'),
+        generateButton: document.getElementById('generateButton'),
+        resultElement: document.getElementById('result'),
+        beerFactElement: document.getElementById('beerFact'),
+        lottieContainer: document.getElementById('lottie-animation'),
+        errorMessageElement: document.getElementById('error-message'),
+        instructionModal: document.getElementById('instruction-modal'),
+        closeModalButton: document.getElementById('close-modal'),
+        // Filter Modal Elements
+        openFilterModalButton: document.getElementById('openFilterModal'),
+        filterModal: document.getElementById('filter-modal'),
+        closeFilterModalButton: document.getElementById('closeFilterModal'),
+        applyFiltersButton: document.getElementById('applyFilters'),
+        // Filters
+        filters: {},
+        neighborhoodFilters: {}
+    };
 
     // Constants and Variables
     const buttonPhrases = [
@@ -51,205 +53,307 @@ document.addEventListener('DOMContentLoaded', () => {
     let lottieAnimation;
     let clickCount = 0;
 
-    // Disable the button until data is loaded
-    generateButton.disabled = true;
-    generateButton.innerText = 'Cargando...';
+    // Initialization
+    init();
 
-    // Load Lottie Animation
-    loadLottieAnimation();
+    function init() {
+        disableGenerateButton('Cargando...');
+        loadLottieAnimation();
+        loadBeerPlaces();
+        addEventListeners();
+        showInstructionModal();
+    }
 
-    // Fetch the data
+    function disableGenerateButton(text) {
+        elements.generateButton.disabled = true;
+        elements.generateButton.innerText = text;
+    }
+
+    function enableGenerateButton(text) {
+        elements.generateButton.disabled = false;
+        elements.generateButton.innerText = text;
+    }
+
     async function loadBeerPlaces() {
         try {
             const response = await fetch('beer_places.json');
             if (!response.ok) {
-                throw new Error(`Error HTTP! Estado: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
             beerPlaces = await response.json();
-            // Enable the button
-            generateButton.disabled = false;
-            generateButton.innerText = '¡Encuentra un garito!';
+            populateTypeFilters();
+            populateNeighborhoodFilters();
+            enableGenerateButton('¡Empieza tu aventura!');
+            updateErrorMessage();
         } catch (error) {
-            console.error('Error al obtener los datos de los bares:', error);
+            console.error('Error loading beer places data:', error);
             alert('No se pudo cargar la información. Por favor, inténtalo más tarde.');
-            generateButton.innerText = 'No disponible';
-            generateButton.disabled = true;
+            disableGenerateButton('No disponible');
         }
     }
 
-    // Call the function to load data
-    loadBeerPlaces();
+    function loadLottieAnimation() {
+        lottieAnimation = lottie.loadAnimation({
+            container: elements.lottieContainer,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            path: 'beer.json'
+        });
+        lottieAnimation.setSpeed(1.5);
+    }
 
-    // Event Listener for the Generate Button
-    generateButton.addEventListener('click', () => {
-        findBeerPlace();
-    });
+    function addEventListeners() {
+        // Generate Button
+        elements.generateButton.addEventListener('click', handleGenerateButtonClick);
 
-    // Add event listeners to the filter checkboxes
-    filterBarsCheckbox.addEventListener('change', updateErrorMessage);
-    filterCupasCheckbox.addEventListener('change', updateErrorMessage);
-    filterTiendaCheckbox.addEventListener('change', updateErrorMessage);
-    filterComidaCheckbox.addEventListener('change', updateErrorMessage);
+        // Open Filter Modal Button
+        elements.openFilterModalButton.addEventListener('click', showFilterModal);
 
-    // Show instruction modal when the app opens
-    showInstructionModal();
+        // Close Filter Modal Button
+        elements.closeFilterModalButton.addEventListener('click', hideFilterModal);
 
-    // Function to show the instruction modal
-    function showInstructionModal() {
-        instructionModal.style.display = 'grid'; // Ensure it's displayed as grid
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        // Apply Filters Button
+        elements.applyFiltersButton.addEventListener('click', () => {
+            hideFilterModal();
+            updateErrorMessage();
+        });
 
-        // When the user clicks on the close button, hide the modal
-        closeModalButton.addEventListener('click', hideInstructionModal);
+        // Modal Close Button
+        elements.closeModalButton.addEventListener('click', hideInstructionModal);
 
-        // Optional: Hide the modal when the user clicks outside of the modal content
+        // Modal Outside Click
         window.addEventListener('click', (event) => {
-            if (event.target === instructionModal) {
+            if (event.target === elements.instructionModal) {
                 hideInstructionModal();
+            }
+            if (event.target === elements.filterModal) {
+                hideFilterModal();
             }
         });
     }
 
-    // Function to hide the instruction modal
-    function hideInstructionModal() {
-        instructionModal.style.display = 'none';
-        document.body.style.overflow = ''; // Restore background scrolling
+    async function handleGenerateButtonClick() {
+        if (areAllFiltersUnchecked()) {
+            displayErrorMessage('No has seleccionado ningún filtro. Por favor, elige al menos uno.');
+            disableGenerateButton('Selecciona filtros');
+            return;
+        } else {
+            clearErrorMessage();
+            enableGenerateButton(getButtonText());
+        }
+
+        clickCount++;
+        playBeerSound();
+        showLoadingState();
+        updateButtonText();
+
+        await delay(2000); // Simulate loading delay
+
+        const filteredPlaces = getFilteredPlaces();
+
+        if (filteredPlaces.length === 0) {
+            displayErrorMessage('No hay lugares que coincidan con tus filtros.');
+            hideLoadingState();
+            elements.generateButton.innerText = 'Prueba a ajustar tus filtros';
+            return;
+        }
+
+        const randomPlace = getRandomItem(filteredPlaces);
+        const randomFact = getRandomItem(beerFacts);
+
+        displayResult(randomPlace, randomFact);
     }
 
-    // Call updateErrorMessage on page load
-    updateErrorMessage();
-
-    async function findBeerPlace() {
-        if (areAllFiltersUnchecked()) {
-            errorMessageElement.innerHTML = '<p>No has seleccionado ningún filtro. Por favor, elige al menos uno.</p>';
-            generateButton.disabled = true;
-            return;
-        } else {
-            errorMessageElement.innerHTML = '';
-            generateButton.disabled = false;
-        }
-
-        // Increment click count
-        clickCount++;
-
-        // Play beer sound
-        beerSound.play().catch(error => {
-            console.error('Error al reproducir el sonido:', error);
+    function playBeerSound() {
+        elements.beerSound.play().catch(error => {
+            console.error('Error playing sound:', error);
         });
+    }
 
-        // Show Lottie animation and remove current content
-        lottieContainer.style.display = 'block';
-        const barDetails = resultElement.querySelector('.bar-details');
-        if (barDetails) {
-            barDetails.remove();
-        }
-
-        // Change button text based on click count
-        if (clickCount <= buttonPhrases.length) {
-            generateButton.innerText = buttonPhrases[clickCount - 1];
-        } else {
-            generateButton.innerText = teasingMessages[(clickCount - buttonPhrases.length - 1) % teasingMessages.length];
-        }
-
-        // Play animation from start
+    function showLoadingState() {
+        elements.lottieContainer.style.display = 'block';
+        clearResult();
         lottieAnimation.goToAndPlay(0, true);
+    }
 
-        // Wait for 2 seconds (simulate delay)
-        await new Promise(resolve => setTimeout(resolve, 2000));
+    function hideLoadingState() {
+        elements.lottieContainer.style.display = 'none';
+    }
 
-        // Get the values of the checkboxes
-        const filterBars = filterBarsCheckbox.checked;
-        const filterCupas = filterCupasCheckbox.checked;
-        const filterTienda = filterTiendaCheckbox.checked;
-        const filterComida = filterComidaCheckbox.checked;
+    function updateButtonText() {
+        elements.generateButton.innerText = getButtonText();
+    }
 
-        // Filter the places based on the selected filters
-        let filteredPlaces = beerPlaces.filter(place => {
-            return (
-                (place.type === '🍻 bares' && filterBars) ||
-                (place.type === '🍷 copas / pubs' && filterCupas) ||
-                (place.type === '🛒 tiendas' && filterTienda) ||
-                (place.type === '🍽️ Restaurantes' && filterComida)
-            );
-        });
-
-        // Check if there are any places after filtering
-        if (filteredPlaces.length === 0) {
-            errorMessageElement.innerHTML = '<p>No hay lugares que coincidan con tus filtros.</p>';
-            lottieContainer.style.display = 'none';
-            generateButton.innerText = 'Prueba a ajustar tus filtros';
-            return;
+    function getButtonText() {
+        if (clickCount === 0) {
+            return '¡Empieza tu aventura!';
+        } else if (clickCount <= buttonPhrases.length) {
+            return buttonPhrases[clickCount - 1];
         } else {
-            errorMessageElement.innerHTML = ''; // Clear any existing error message
+            const index = (clickCount - buttonPhrases.length - 1) % teasingMessages.length;
+            return teasingMessages[index];
         }
+    }
 
-        const randomPlace = filteredPlaces[Math.floor(Math.random() * filteredPlaces.length)];
-        const randomFact = beerFacts[Math.floor(Math.random() * beerFacts.length)];
+    function getFilteredPlaces() {
+        const selectedTypes = Object.keys(elements.filters).filter(key => elements.filters[key].checked);
+        const selectedNeighborhoods = Object.keys(elements.neighborhoodFilters).filter(key => elements.neighborhoodFilters[key].checked);
 
-        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${randomPlace.name} ${randomPlace.address}`)}`;
-        const whatsappUrl = `https://api.whatsapp.com/send?text=¡Mira%20este%20sitio!:%20${encodeURIComponent(randomPlace.name)}%20en%20${encodeURIComponent(randomPlace.address)}.%20Cómo%20llegar:%20${encodeURIComponent(googleMapsUrl)}`;
+        return beerPlaces.filter(place => {
+            const matchesType = selectedTypes.includes(place.type);
+            const matchesNeighborhood = selectedNeighborhoods.includes(place.neighborhood);
+            return matchesType && matchesNeighborhood;
+        });
+    }
 
-        // Create the bar details element
+    function displayResult(place, fact) {
+        hideLoadingState();
+
+        const barDetailsElement = createBarDetailsElement(place);
+        elements.resultElement.appendChild(barDetailsElement);
+
+        elements.beerFactElement.innerText = `Dato curioso: ${fact}`;
+    }
+
+    function createBarDetailsElement(place) {
         const barDetailsElement = document.createElement('div');
         barDetailsElement.classList.add('bar-details');
 
+        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.address}`)}`;
+        const whatsappUrl = `https://api.whatsapp.com/send?text=¡Mira%20este%20sitio!:%20${encodeURIComponent(place.name)}%20en%20${encodeURIComponent(place.address)}.%20Cómo%20llegar:%20${encodeURIComponent(googleMapsUrl)}`;
+
         barDetailsElement.innerHTML = `
-            <p class="bar-name"><strong>${randomPlace.name}</strong></p>
+            <p class="bar-name"><strong>${place.name}</strong></p>
             <div class="labels">
-                <span class="label neighborhood">📍 ${randomPlace.neighborhood}</span>
-                <span class="label category">${capitalizeFirstLetter(randomPlace.type)}</span>
+                <span class="label neighborhood">📍 ${place.neighborhood}</span>
+                <span class="label category">${capitalizeFirstLetter(place.type)}</span>
             </div>
             <p class="bar-address">
-                ${randomPlace.address}
+                ${place.address}
             </p>
             <div class="button-group">
                 <a href="${googleMapsUrl}" target="_blank" class="button"><i class="fas fa-map-marker-alt"></i>Cómo llegar</a>
                 <a href="${whatsappUrl}" target="_blank" class="button"><i class="fab fa-whatsapp"></i>Compartir</a>
             </div>
         `;
-
-        // Hide the animation and display the bar content
-        lottieContainer.style.display = 'none';
-        resultElement.appendChild(barDetailsElement);
-
-        // Update the beer fact
-        beerFactElement.innerText = `Dato curioso: ${randomFact}`;
+        return barDetailsElement;
     }
 
-    // Function to check if all filters are unchecked
-    function areAllFiltersUnchecked() {
-        return !filterBarsCheckbox.checked &&
-               !filterCupasCheckbox.checked &&
-               !filterTiendaCheckbox.checked &&
-               !filterComidaCheckbox.checked;
-    }
-
-    // Function to update error message based on filter states
-    function updateErrorMessage() {
-        if (areAllFiltersUnchecked()) {
-            errorMessageElement.innerHTML = '<p>No has seleccionado ningún filtro. Por favor, elige al menos uno.</p>';
-            generateButton.disabled = true;
-        } else {
-            errorMessageElement.innerHTML = ''; // Clear any existing error message
-            generateButton.disabled = false;
+    function clearResult() {
+        const barDetails = elements.resultElement.querySelector('.bar-details');
+        if (barDetails) {
+            barDetails.remove();
         }
     }
 
-    // Load Lottie Animation
-    function loadLottieAnimation() {
-        lottieAnimation = lottie.loadAnimation({
-            container: document.getElementById('lottie-animation'),
-            renderer: 'svg',
-            loop: false,
-            autoplay: false,
-            path: 'beer.json'
-        });
-
-        lottieAnimation.setSpeed(1.5);
+    function areAllFiltersUnchecked() {
+        const typeFiltersUnchecked = !Object.values(elements.filters).some(filter => filter.checked);
+        const neighborhoodFiltersUnchecked = !Object.values(elements.neighborhoodFilters).some(filter => filter.checked);
+        return typeFiltersUnchecked || neighborhoodFiltersUnchecked;
     }
 
-    // Helper Function to Capitalize Each Word
+    function updateErrorMessage() {
+        if (areAllFiltersUnchecked()) {
+            displayErrorMessage('No has seleccionado ningún filtro. Por favor, elige al menos uno.');
+            disableGenerateButton('Selecciona filtros');
+        } else {
+            clearErrorMessage();
+            enableGenerateButton(getButtonText());
+        }
+    }
+
+    function displayErrorMessage(message) {
+        elements.errorMessageElement.innerHTML = `<p>${message}</p>`;
+    }
+
+    function clearErrorMessage() {
+        elements.errorMessageElement.innerHTML = '';
+    }
+
+    function showInstructionModal() {
+        elements.instructionModal.style.display = 'grid';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideInstructionModal() {
+        elements.instructionModal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function showFilterModal() {
+        elements.filterModal.style.display = 'grid'; // Use 'grid' to align content
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideFilterModal() {
+        elements.filterModal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function getRandomItem(array) {
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
     function capitalizeFirstLetter(string) {
         return string.replace(/\b\w/g, char => char.toUpperCase());
+    }
+
+    function populateTypeFilters() {
+        const typeFiltersContainer = document.getElementById('type-filters');
+        const types = [...new Set(beerPlaces.map(place => place.type))];
+
+        types.forEach(type => {
+            const checkboxId = `filter${type.replace(/[^a-zA-Z0-9]/g, '')}`;
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = checkboxId;
+            checkbox.checked = true; // Set to checked by default
+            checkbox.hidden = true;
+
+            const label = document.createElement('label');
+            label.classList.add('chip');
+            label.htmlFor = checkboxId;
+            label.textContent = type;
+
+            typeFiltersContainer.appendChild(checkbox);
+            typeFiltersContainer.appendChild(label);
+
+            elements.filters[type] = checkbox;
+
+            checkbox.addEventListener('change', updateErrorMessage);
+        });
+    }
+
+    function populateNeighborhoodFilters() {
+        const neighborhoodFiltersContainer = document.getElementById('neighborhood-filters');
+        const neighborhoods = [...new Set(beerPlaces.map(place => place.neighborhood))];
+
+        neighborhoods.forEach(neighborhood => {
+            const checkboxId = `filter${neighborhood.replace(/[^a-zA-Z0-9]/g, '')}`;
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = checkboxId;
+            checkbox.checked = true; // Set to checked by default
+            checkbox.hidden = true;
+
+            const label = document.createElement('label');
+            label.classList.add('chip');
+            label.htmlFor = checkboxId;
+            label.textContent = neighborhood;
+
+            neighborhoodFiltersContainer.appendChild(checkbox);
+            neighborhoodFiltersContainer.appendChild(label);
+
+            elements.neighborhoodFilters[neighborhood] = checkbox;
+
+            checkbox.addEventListener('change', updateErrorMessage);
+        });
     }
 });

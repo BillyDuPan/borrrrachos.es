@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Meta Tags and Head Content -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cervezabeer.es</title>
@@ -27,52 +28,49 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Enlace a Font Awesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous">
-    <!-- Script de Lottie (Incluir ANTES de tu script.js) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js" crossorigin="anonymous"></script>
-    <!-- JavaScript Principal (Incluir DESPUÉS de lottie.min.js) -->
-    <script src="script.js"></script>
+    <!-- Script de Lottie (Keep 'defer') -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js" crossorigin="anonymous" defer></script>
+    <!-- JavaScript Principal (Add 'defer') -->
+    <script src="script.js" defer></script>
     <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NML69RWS');</script>
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-NML69RWS');
+    </script>
     <!-- End Google Tag Manager -->
+    <!-- Elemento de Audio -->
+    <audio id="beerSound" src="beer-bottle-open.mp3"></audio>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NML69RWS"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NML69RWS"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div class="container">
         <!-- Contenido Principal -->
         <main class="main-content">
             <h1>Cervezabeer.es</h1>
-            <!-- Sección de Filtros -->
-            <div id="filters">
-                <input type="checkbox" id="filterBars" checked hidden>
-                <label class="chip" for="filterBars">🍻 Bares / Cervecerias</label>
 
-                <input type="checkbox" id="filterCupas" checked hidden>
-                <label class="chip" for="filterCupas">🍷 Copas / Pubs</label>
+            <!-- Filter Button -->
+            <button id="openFilterModal" class="filter-button">
+                <i class="fas fa-filter"></i> Filtros
+            </button>
 
-                <input type="checkbox" id="filterTienda" checked hidden>
-                <label class="chip" for="filterTienda">🛒 Tiendas de bebida</label>
-
-                <input type="checkbox" id="filterComida" checked hidden>
-                <label class="chip" for="filterComida">🍽️ Restaurantes</label>
-
-
-            </div>
             <!-- Error Message -->
             <div id="error-message"></div>
+
             <!-- Showing Results card -->
             <div id="result">
                 <div id="lottie-animation" style="width: 200px; height: 200px; margin: 20px auto; display: none;"></div>
             </div>
 
             <!-- Botón Generar -->
-            <button id="generateButton">¡Encuentra un garito!</button>
+            <button id="generateButton"></button>
 
             <!-- Enlaces Adicionales -->
             <div class="additional-links">
@@ -80,8 +78,6 @@
                 <span class="separator">|</span>
                 <a href="https://api.whatsapp.com/send?text=¡Échale%20un%20ojo%20a%20esta%20app%20que%20encontré!%20cervezabeer.es%20¡Deberíamos%20probarla!" target="_blank">Comparte esta app</a>
             </div>
-
-            
 
             <!-- Hechos Sobre la Cerveza -->
             <div class="beer-fact" id="beerFact"></div>
@@ -91,32 +87,55 @@
             <p>Creado por <a href="https://trooper.es" target="_blank" rel="noopener noreferrer">Trooper</a></p>
         </footer>
     </div>
-        <!-- Instruction Modal -->
-        <div id="instruction-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Tu aventura comienza aquí</h2>
-                    <p>📱🍻🏙️🎉🥳</p>
+
+    <!-- Instruction Modal -->
+    <div id="instruction-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tu aventura comienza aquí</h2>
+                <p>📱🍻🏙️🎉🥳</p>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <strong>Olvida las reseñas y recomendaciones, arriesga y descubre dónde terminarás.</strong>
+                </p>
+                <p>
+                    Cervezabeer.es te ayuda a encontrar lugares aleatorios para disfrutar de una buena cerveza en Barcelona.
+                </p>
+                <p>
+                    Todos los filtros <strong>están activados por defecto</strong> para ofrecerte una gran variedad, pero puedes desactivarlos para ajustar tu búsqueda. Luego, simplemente haz clic en el botón de abajo para <strong>empezar tu aventura</strong> cervecera.
+                </p>
+                <p>
+                    Al final, <strong>¡la fiesta la haces tú!</strong> Siempre y cuando tengamos Cervezabeer.
+                </p>
+            </div>
+            <button id="close-modal" class="modal-button">¡Entendido!</button>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filter-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Elige tus filtros</h2>
+            </div>
+            <div class="modal-body">
+                <!-- Type Filters -->
+                <h3>Tipo de Lugar</h3>
+                <div id="type-filters" class="filter-chips">
+                    <!-- Type filter chips will be generated dynamically -->
                 </div>
-                <div class="modal-body">
-                    <p>
-                        <strong>Olvida las reseñas y recomendaciones, arriesga y descubre dónde terminarás.</strong>
-                    </p>
-                    <p>
-                        Cervezabeer.es te ayuda a encontrar lugares aleatorios para disfrutar de una buena cerveza en Barcelona.
-                    </p>
-                    <p>
-                        Todos los filtros <strong>están activados por defecto</strong> para ofrecerte una gran variedad, pero puedes desactivarlos para ajustar tu búsqueda. Luego, simplemente haz clic en el botón de abajo para <strong>empezar tu aventura</strong> cervecera.
-                    </p>
-                    <p>
-                        Al final, <strong>¡la fiesta la haces tú!</strong> Siempre y cuando tengamos Cervezabeer.
-                    </p>
+                <!-- Neighborhood Filters -->
+                <h3>Vecindarios</h3>
+                <div id="neighborhood-filters" class="filter-chips">
+                    <!-- Neighborhood filter chips will be generated dynamically -->
                 </div>
-                <button id="close-modal" class="modal-button">¡Entendido!</button>
+            </div>
+            <div class="modal-footer">
+                <button id="applyFilters" class="modal-button">Aplicar Filtros</button>
+                <button id="closeFilterModal" class="modal-button">Cerrar</button>
             </div>
         </div>
-
-    <!-- Elemento de Audio -->
-    <audio id="beerSound" src="/beer-bottle-open.mp3"></audio>
+    </div>
 </body>
 </html>
