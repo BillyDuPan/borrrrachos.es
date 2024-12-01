@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Filter Modal Elements
         openFilterModalButton: document.getElementById('openFilterModal'),
         filterModal: document.getElementById('filter-modal'),
-        closeFilterModalButton: document.getElementById('closeFilterModal'),
         applyFiltersButton: document.getElementById('applyFilters'),
         // Filters
         filters: {},
@@ -21,11 +20,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Constants and Variables
     const buttonPhrases = [
-        "¡A beber!",
-        "¡Ponme una birra!",
-        "¡Encuentra mi birra!",
-        "¡Salud!",
-        "¡Vamos al lío!"
+        "Dame otra",
+        "Una más",
+        "¡Next!",
+        "Otro",
+        "Veremos",
+        "Prueba otra",
+        "Enséñame más",
+        "¿Qué más hay?",
+        "No está mal",
+        "Continúa",
+        "Más opciones"
     ];
 
     const teasingMessages = [
@@ -38,15 +43,39 @@ document.addEventListener('DOMContentLoaded', () => {
         "Vamos, dale una oportunidad.",
         "¿Miedo al compromiso?",
         "¡Este lugar lleva tu nombre!",
-        "Vale, una más y ya..."
+        "Vale, una más y ya...",
+        "¿Cuántas veces más vas a hacer clic?",
+        "El siguiente eres tú.",
+        "¿Buscando el bar perfecto?",
+        "¡Ni que fueras tan exigente!",
+        "En algún momento tendrás que elegir.",
+        "Podrías estar bebiendo ya...",
+        "Este sí que sí.",
+        "¡No seas indeciso!",
+        "¿Te decides o seguimos toda la noche?",
+        "Deja el movil y agarra una cerveza."
     ];
 
     const beerFacts = [
         "¡La cerveza es una de las bebidas más antiguas del mundo, data del 5000 a.C.!",
-        "¡La receta más antigua de cerveza tiene más de 4000 años, de la antigua Mesopotamia!",
-        "Alemania tiene más de 1500 tipos diferentes de cerveza.",
+        "La receta más antigua de cerveza tiene más de 4000 años, de la antigua Mesopotamia.",
+        "Alemania tiene más de 1,500 tipos diferentes de cerveza.",
         "La cenosilicafobia es el miedo a un vaso de cerveza vacío.",
-        "En 1814, Londres sufrió la Gran Inundación de Cerveza, ¡liberando más de 323,000 galones!"
+        "En 1814, Londres sufrió la Gran Inundación de Cerveza, ¡liberando más de 1 millón de litros!",
+        "La cerveza más fuerte del mundo tiene un 67.5% de alcohol.",
+        "En la Edad Media, la cerveza se consumía diariamente porque el agua no era segura.",
+        "La Oktoberfest de Múnich comenzó en 1810 como una celebración de una boda real.",
+        "Los antiguos egipcios pagaban a los trabajadores con cerveza.",
+        "La palabra 'cerveza' proviene del latín 'cerevisia'.",
+        "¿Sabías que Cervezabeer.es es tu mejor aliado para descubrir nuevos lugares?",
+        "Esta app fue creada para aventureros cerveceros como tú.",
+        "No importa cuántas veces hagas clic, siempre hay un bar esperándote.",
+        "Cervezabeer.es es tu guía al azar en el mundo de las cervezas.",
+        "En la antigua Babilonia, si una cerveza era mala, el cervecero podía ser ahogado en ella.",
+        "La cerveza es la tercera bebida más popular del mundo después del agua y el té.",
+        "La espuma en la cerveza ayuda a evitar que se oxide al mantener el oxígeno alejado.",
+        "En Japón, existe cerveza de arroz hecha con hongos koji.",
+        "Los monjes trapenses de Bélgica elaboran cerveza para financiar su monasterio."
     ];
 
     let beerPlaces = [];
@@ -110,9 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Open Filter Modal Button
         elements.openFilterModalButton.addEventListener('click', showFilterModal);
 
-        // Close Filter Modal Button
-        elements.closeFilterModalButton.addEventListener('click', hideFilterModal);
-
         // Apply Filters Button
         elements.applyFiltersButton.addEventListener('click', () => {
             hideFilterModal();
@@ -148,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showLoadingState();
         updateButtonText();
 
-        await delay(2000); // Simulate loading delay
+        await delay(750); // Simulate loading delay
 
         const filteredPlaces = getFilteredPlaces();
 

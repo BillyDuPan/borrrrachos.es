@@ -354,6 +354,8 @@ button:disabled {
     border: var(--button-border);
     width: 80%;
     max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
     border-radius: var(--border-radius);
     color: var(--primary-color);
     text-align: left;
@@ -367,8 +369,8 @@ button:disabled {
     color: var(--primary-color);
     text-align: center;
     background-color: var(--background-color);
-    padding: 10px 0;
-    border-radius: var(--border-radius);
+    padding: 15px;
+    border-radius: calc(var(--border-radius) - 15px);
 }
 
 .modal-header h2 {
@@ -407,7 +409,7 @@ button:disabled {
     transform: translateY(var(--button-hover-transition));
 }
 
-/* Filter Modal */
+/* Filter Modal 
 #filter-modal .modal-content {
     background: linear-gradient(180deg, #fceabb 0%, #f8b500 100%);
     padding: 20px;
@@ -423,14 +425,7 @@ button:disabled {
     box-shadow: var(--box-shadow);
     animation: fadeIn var(--transition-speed) ease-in-out;
 }
-
-#filter-modal .modal-header {
-    color: var(--primary-color);
-    text-align: center;
-    background-color: var(--background-color);
-    padding: 10px 0;
-    border-radius: var(--border-radius);
-}
+*/
 
 #filter-modal .modal-header h2 {
     font-size: 1.8rem;
@@ -552,7 +547,7 @@ footer a:hover {
     h1 {
         font-size: 2rem;
     }
-    .button, .label, #filter-modal .modal-button, #filter-modal .chip, .filter-button {
+    .button, .label, #filter-modal .modal-button, #filter-modal .chip, .filter-button, .modal-body p {
         font-size: 0.8rem;
     }
     .bar-details .bar-name {
@@ -560,6 +555,9 @@ footer a:hover {
     }
     .beer-fact {
         font-size: 0.875rem;
+    }
+    .modal-header h2 {
+        font-size: 1.3rem;
     }
 }
 
