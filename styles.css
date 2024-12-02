@@ -62,7 +62,7 @@ h1, h2, h3 {
     font-weight: 700;
     font-size: clamp(2.5rem, 5vw, 4rem);
     color: var(--primary-color);
-    text-shadow: 2px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .subtitle {
@@ -111,6 +111,7 @@ button {
     padding: 15px 30px;
     font-size: 1.1rem;
     cursor: pointer;
+    font-family: inherit;
     background-color: var(--button-bg-color);
     color: var(--button-text-color);
     border: none;
