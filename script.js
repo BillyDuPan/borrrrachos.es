@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
         openFilterModalButton: document.getElementById('openFilterModal'),
         filterModal: document.getElementById('filter-modal'),
         applyFiltersButton: document.getElementById('applyFilters'),
+        // Add showClosedToggle to elements
+        showClosedToggle: document.getElementById('showClosedToggle'),
         // Filters
         filters: {},
         neighborhoodFilters: {}
@@ -53,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Este sí que sí.",
         "¡No seas indeciso!",
         "¿Te decides o seguimos toda la noche?",
-        "Deja el movil y agarra una cerveza."
+        "Deja el móvil y agarra una cerveza."
     ];
 
     const beerFacts = [
@@ -109,7 +111,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            beerPlaces = await response.json();
+            const data = await response.json();
+
+            beerPlaces = data.map(place => ({
+                name: place['Name'],
+                type: place['Nom_Activitat'],
+                address: place['Ggl Adress'],
+                neighborhood: place['Bario'],
+                googleLink: place['Google Link'],
+                openingHours: {
+                    Monday: place['Monday'],
+                    Tuesday: place['Tuesday'],
+                    Wednesday: place['Wednesday'],
+                    Thursday: place['Thursday'],
+                    Friday: place['Friday'],
+                    Saturday: place['Saturday'],
+                    Sunday: place['Sunday']
+                }
+            }));
+
             populateTypeFilters();
             populateNeighborhoodFilters();
             enableGenerateButton('¡Empieza tu aventura!');
@@ -157,6 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 hideFilterModal();
             }
         });
+
+        // Toggle for Showing Closed Places
+        elements.showClosedToggle.addEventListener('change', updateErrorMessage);
     }
 
     async function handleGenerateButtonClick() {
@@ -225,13 +248,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function getFilteredPlaces() {
         const selectedTypes = Object.keys(elements.filters).filter(key => elements.filters[key].checked);
         const selectedNeighborhoods = Object.keys(elements.neighborhoodFilters).filter(key => elements.neighborhoodFilters[key].checked);
-
+        const includeClosed = elements.showClosedToggle.checked;
+    
         return beerPlaces.filter(place => {
             const matchesType = selectedTypes.includes(place.type);
             const matchesNeighborhood = selectedNeighborhoods.includes(place.neighborhood);
-            return matchesType && matchesNeighborhood;
+            const isOpen = isPlaceOpenNow(place);
+            return matchesType && matchesNeighborhood && (isOpen || includeClosed);
         });
     }
+    
 
     function displayResult(place, fact) {
         hideLoadingState();
@@ -246,10 +272,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const barDetailsElement = document.createElement('div');
         barDetailsElement.classList.add('bar-details');
 
-        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.address}`)}`;
+        const isOpen = isPlaceOpenNow(place);
+        const openStatusLabel = isOpen ? 'Abierto' : 'Cerrado';
+
+        const statusChip = document.createElement('span');
+        statusChip.classList.add('status-chip', isOpen ? 'open' : 'closed');
+        statusChip.textContent = openStatusLabel;
+
+        barDetailsElement.appendChild(statusChip);
+
+        const googleMapsUrl = place.googleLink;
         const whatsappUrl = `https://api.whatsapp.com/send?text=¡Mira%20este%20sitio!:%20${encodeURIComponent(place.name)}%20en%20${encodeURIComponent(place.address)}.%20Cómo%20llegar:%20${encodeURIComponent(googleMapsUrl)}`;
 
-        barDetailsElement.innerHTML = `
+        barDetailsElement.innerHTML += `
             <p class="bar-name"><strong>${place.name}</strong></p>
             <div class="labels">
                 <span class="label neighborhood">📍 ${place.neighborhood}</span>
@@ -265,6 +300,105 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         return barDetailsElement;
     }
+
+    function isPlaceOpenNow(place) {
+        // Get current time in Barcelona, Spain
+        const options = {
+            timeZone: 'Europe/Madrid',
+            hour12: false,
+            weekday: 'long',
+            hour: 'numeric',
+            minute: 'numeric'
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        const parts = formatter.formatToParts(new Date());
+        let currentDayName = '';
+        let currentHour = 0;
+        let currentMinute = 0;
+    
+        parts.forEach(part => {
+            if (part.type === 'weekday') {
+                currentDayName = part.value;
+            }
+            if (part.type === 'hour') {
+                currentHour = parseInt(part.value);
+            }
+            if (part.type === 'minute') {
+                currentMinute = parseInt(part.value);
+            }
+        });
+    
+        const currentTime = currentHour * 60 + currentMinute;
+    
+        const hoursToday = place.openingHours[currentDayName];
+        if (!hoursToday || hoursToday.toLowerCase().includes('closed')) {
+            return false;
+        }
+    
+        // Clean up time strings
+        let cleanedHours = hoursToday;
+        // Replace all whitespace characters with a single space
+        cleanedHours = cleanedHours.replace(/\s+/g, ' ').trim();
+        // Replace various dashes with a standard hyphen
+        cleanedHours = cleanedHours.replace(/[–—−‑]/g, '-');
+        // Remove any spaces around the dash
+        cleanedHours = cleanedHours.replace(/\s*-\s*/, '-');
+        const [openTimeStr, closeTimeStr] = cleanedHours.split('-').map(s => s.trim());
+    
+        if (!openTimeStr || !closeTimeStr) {
+            console.error(`Could not split opening hours for ${place.name}: ${hoursToday}`);
+            return false;
+        }
+    
+        const openTime = parseTimeString(openTimeStr);
+        const closeTime = parseTimeString(closeTimeStr);
+    
+        if (openTime === null || closeTime === null) {
+            console.error(`Invalid time format for ${place.name}: ${hoursToday}`);
+            return false;
+        }
+    
+        // Adjust for places that close after midnight
+        if (closeTime < openTime) {
+            // Close time is after midnight
+            if (currentTime >= openTime || currentTime < closeTime) {
+                return true;
+            }
+        } else {
+            if (currentTime >= openTime && currentTime < closeTime) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function parseTimeString(timeStr) {
+        if (!timeStr) {
+            console.error('Time string is undefined or null');
+            return null;
+        }
+        // Replace all whitespace characters with a single space
+        timeStr = timeStr.replace(/\s+/g, ' ').trim();
+        // Ensure there's a space before AM/PM
+        timeStr = timeStr.replace(/(AM|PM)/i, ' $1').trim();
+        // Parse the time string
+        const timeParts = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+        if (!timeParts) {
+            console.error(`Invalid time string: ${timeStr}`);
+            return null;
+        }
+        let hours = parseInt(timeParts[1]);
+        const minutes = parseInt(timeParts[2]);
+        const ampm = timeParts[3].toUpperCase();
+        if (ampm === 'PM' && hours < 12) {
+            hours += 12;
+        }
+        if (ampm === 'AM' && hours === 12) {
+            hours = 0;
+        }
+        return hours * 60 + minutes;
+    }
+    
 
     function clearResult() {
         const barDetails = elements.resultElement.querySelector('.bar-details');

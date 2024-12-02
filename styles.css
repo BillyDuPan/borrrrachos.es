@@ -294,6 +294,34 @@ button:disabled {
     color: var(--text-color);
 }
 
+.status-chip {
+    position: absolute;
+    left: 53px;
+    top: 0px;
+    padding: 8px 19px;
+    border-radius: 0 0 30px 30px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8em;
+    box-shadow: 0px 3px 10px -7px black;
+}
+
+.status-chip.open {
+    background-color: #28a745; /* Green */
+}
+
+.status-chip.closed {
+    background-color: #dc3545; /* Red */
+}
+
+.bar-details {
+    position: relative; /* To position the status chip correctly */
+    /* Existing styles... */
+}
+
+
+
+
 /* Beer Fact */
 .beer-fact {
     font-style: italic;
@@ -509,6 +537,61 @@ button:disabled {
     border: var(--button-border);
     transform: translateY(var(--button-hover-transition));
 }
+
+/* Toggle Container */
+.toggle-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+/* Toggle Label */
+.toggle-label {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+/* Hide the default checkbox */
+.toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+/* Custom Toggle Switch */
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 24px;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+.toggle-switch::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 2px;
+    top: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+/* Checked State */
+.toggle-label input[type="checkbox"]:checked + .toggle-switch {
+    background-color: #28a745;
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-switch::before {
+    transform: translateX(26px);
+}
+
+
+
 
 /* Animation */
 @keyframes fadeIn {

@@ -52,20 +52,16 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div class="container">
-           <!-- Filter Button -->
-           <div class="filter-button-container">
+        <!-- Filter Button -->
+        <div class="filter-button-container">
             <button id="openFilterModal" class="filter-button">
                 <i class="fas fa-filter"></i> Filtros
             </button>
         </div>
         <!-- Contenido Principal -->
         <main class="main-content">
-          
-
             <h1>Cervezabeer.es</h1>
             <p class="sub-title">Vamos a tomar</p>
-
-           
 
             <!-- Error Message -->
             <div id="error-message"></div>
@@ -73,10 +69,11 @@
             <!-- Showing Results card -->
             <div id="result">
                 <div id="lottie-animation" style="width: 200px; height: 200px; margin: 20px auto; display: none;"></div>
+                <!-- The bar details will be inserted here by JavaScript -->
             </div>
 
             <!-- Botón Generar -->
-            <button id="generateButton"></button>
+            <button id="generateButton">Cargando...</button>
 
             <!-- Enlaces Adicionales -->
             <div class="additional-links">
@@ -135,6 +132,14 @@
                 <h3>Barrio</h3>
                 <div id="neighborhood-filters" class="filter-chips">
                     <!-- Neighborhood filter chips will be generated dynamically -->
+                </div>
+                <!-- Show Closed Places Toggle -->
+                <div class="toggle-container">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="showClosedToggle">
+                        <span class="toggle-switch"></span>
+                        Incluir lugares cerrados
+                    </label>
                 </div>
             </div>
             <div class="modal-footer">
