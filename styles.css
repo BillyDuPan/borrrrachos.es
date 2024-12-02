@@ -296,12 +296,11 @@ button:disabled {
 
 .status-chip {
     position: absolute;
-    left: 53px;
+    left: 70%;
     top: 0px;
     padding: 8px 19px;
     border-radius: 0 0 30px 30px;
     color: white;
-    font-weight: bold;
     font-size: 0.8em;
     box-shadow: 0px 3px 10px -7px black;
 }
