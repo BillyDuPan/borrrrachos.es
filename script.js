@@ -302,8 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
          * NEW CODE STARTS HERE
          * 
          * This section modifies the "Cómo llegar" link to ensure it opens
-         * in the Google Maps app on mobile devices. It detects the user's
-         * device and constructs the appropriate URL scheme.
+         * in the Google Maps app on mobile devices without planning a route.
          */
 
         // Select the "Cómo llegar" link we just added
@@ -580,7 +579,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Opens the Google Maps app with the specified place.
+     * Opens the Google Maps app with the specified place details.
      * Falls back to the standard Google Maps web URL if the app isn't installed.
      * @param {Object} place - The place object containing googleLink and other details.
      */
@@ -595,11 +594,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (isAndroid()) {
-            // Construct the Android Intent URL
-            const intentUrl = `intent://maps.google.com/maps?daddr=place_id:${placeId}#Intent;scheme=https;package=com.google.android.apps.maps;end`;
+            // Construct the Android Intent URL for place details
+            const intentUrl = `intent://maps.google.com/maps?q=place_id:${placeId}#Intent;scheme=https;package=com.google.android.apps.maps;end`;
             window.location = intentUrl;
         } else if (isIOS()) {
-            // Construct the iOS Custom URL Scheme
+            // Construct the iOS Custom URL Scheme for place details
             const appUrl = `comgooglemaps://?q=place_id:${placeId}`;
             // Attempt to open the Google Maps app
             window.location = appUrl;
