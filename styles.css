@@ -390,7 +390,7 @@ button:disabled {
     padding: 20px;
     margin: 0;
     border: var(--button-border);
-    width: 80%;
+    width: 85%;
     max-width: 500px;
     max-height: 80vh;
     overflow-y: auto;
@@ -428,6 +428,7 @@ button:disabled {
 }
 
 .modal-button {
+    float: right;
     padding: 10px 20px;
     background-color: var(--button-bg-color);
     color: var(--button-text-color);

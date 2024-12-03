@@ -464,28 +464,49 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.instructionModal.style.display = 'none';
         document.body.style.overflow = '';
     
-        // Verificar si el enlace "¿Cómo funciona?" ya existe para evitar duplicados
+        // Check if 'comoFunctionaLink' exists
         if (!document.getElementById('comoFunctionaLink')) {
-            // Crear el elemento de enlace
+            // Create the link
             const link = document.createElement('a');
             link.href = '#';
             link.id = 'comoFunctionaLink';
             link.textContent = '¿Cómo funciona?';
             
-            // Asignar una clase para estilizar vía CSS
+            // Assign class for styling
             link.classList.add('como-funciona-link');
     
-            // Agregar un Event Listener para manejar el clic
+            // Add click listener to reopen the instruction modal
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                showInstructionModal(); // Reabrir el modal de instrucciones
-                link.remove(); // Eliminar el enlace después de hacer clic
+                showInstructionModal();
+                link.remove();
             });
     
-            // Insertar el enlace al final del área de resultados
+            // Append the link to the result element
             elements.resultElement.appendChild(link);
+    
+            /**
+             * NEW CODE STARTS HERE
+             * 
+             * This section ensures that the first frame of the Lottie animation
+             * is displayed below the "¿Cómo funciona?" link when on the start screen.
+             */
+    
+            // Set the Lottie animation to the first frame
+            lottieAnimation.goToAndStop(0, true);
+    
+            // Ensure the Lottie container is visible
+            elements.lottieContainer.style.display = 'block';
+    
+            // Insert the Lottie container right after the "¿Cómo funciona?" link
+            link.insertAdjacentElement('afterend', elements.lottieContainer);
+    
+            /**
+             * NEW CODE ENDS HERE
+             */
         }
     }
+    
     
 
     function showFilterModal() {
