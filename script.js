@@ -424,6 +424,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (barDetails) {
             barDetails.remove();
         }
+        // Eliminar el enlace "¿Cómo funciona?" si existe
+        const comoFunctionaLink = document.getElementById('comoFunctionaLink');
+        if (comoFunctionaLink) {
+            comoFunctionaLink.remove();
+        }
     }
 
     function areAllFiltersUnchecked() {
@@ -458,7 +463,30 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideInstructionModal() {
         elements.instructionModal.style.display = 'none';
         document.body.style.overflow = '';
+    
+        // Verificar si el enlace "¿Cómo funciona?" ya existe para evitar duplicados
+        if (!document.getElementById('comoFunctionaLink')) {
+            // Crear el elemento de enlace
+            const link = document.createElement('a');
+            link.href = '#';
+            link.id = 'comoFunctionaLink';
+            link.textContent = '¿Cómo funciona?';
+            
+            // Asignar una clase para estilizar vía CSS
+            link.classList.add('como-funciona-link');
+    
+            // Agregar un Event Listener para manejar el clic
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                showInstructionModal(); // Reabrir el modal de instrucciones
+                link.remove(); // Eliminar el enlace después de hacer clic
+            });
+    
+            // Insertar el enlace al final del área de resultados
+            elements.resultElement.appendChild(link);
+        }
     }
+    
 
     function showFilterModal() {
         elements.filterModal.style.display = 'grid'; // Use 'grid' to align content

@@ -2,7 +2,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;700&family=Figtree:wght@400;500;700&display=swap');
 
-
 /* CSS Variables */
 :root {
     --font-heading: 'DynaPuff', sans-serif;
@@ -271,6 +270,24 @@ button:disabled {
     letter-spacing: 1px;
     border: var(--button-border);
 }
+
+/* Estilos para el enlace "¿Cómo funciona?" */
+.como-funciona-link {
+    display: block;               /* Permite aplicar margin:auto */
+    margin: 10px auto 0;          /* Centra horizontalmente y agrega margen superior */
+    font-size: 14px;              /* Tamaño de fuente ajustable */
+    color:var(--primary-color);               /* Color del enlace (ajusta según tu paleta) */
+    text-decoration: underline;   /* Subrayado para indicar que es un enlace */
+    cursor: pointer;              /* Cambia el cursor al pasar por encima */
+    width: fit-content;           /* Ajusta el ancho al contenido */
+}
+
+/* Efecto hover para mejorar la interacción */
+.como-funciona-link:hover {
+    color:var(--background-color); /* Un tono más oscuro al pasar el mouse */
+}
+
+
 
 /* Additional Links */
 .additional-links {
