@@ -238,6 +238,7 @@ button:disabled {
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 15px;
+    margin-top: 10px;
     text-align: center;
 }
 
@@ -273,21 +274,14 @@ button:disabled {
 
 /* Estilos para el enlace "¿Cómo funciona?" */
 .como-funciona-link {
-    display: block;               /* Permite aplicar margin:auto */
-    margin: 10px auto 0;          /* Centra horizontalmente y agrega margen superior */
-    font-size: 14px;              /* Tamaño de fuente ajustable */
-    color:var(--primary-color);               /* Color del enlace (ajusta según tu paleta) */
-    text-decoration: underline;   /* Subrayado para indicar que es un enlace */
-    cursor: pointer;              /* Cambia el cursor al pasar por encima */
-    width: fit-content;           /* Ajusta el ancho al contenido */
+    display: block;
+    margin: 10px auto 0;
+    font-size: 14px;
+    color:var(--primary-color);
+    text-decoration: underline;
+    cursor: pointer;
+    width: fit-content;
 }
-
-/* Efecto hover para mejorar la interacción */
-.como-funciona-link:hover {
-    color:var(--background-color); /* Un tono más oscuro al pasar el mouse */
-}
-
-
 
 /* Additional Links */
 .additional-links {

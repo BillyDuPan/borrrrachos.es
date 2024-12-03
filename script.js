@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
             autoplay: false,
             path: 'beer.json'
         });
-        lottieAnimation.setSpeed(1.5);
+        lottieAnimation.setSpeed(2.5);
     }
 
     function addEventListeners() {
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showLoadingState();
         updateButtonText();
 
-        await delay(750); // Simulate loading delay
+        await delay(400); // Simulate loading delay
 
         const filteredPlaces = getFilteredPlaces();
 
@@ -565,13 +565,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * NEW HELPER FUNCTIONS START HERE
-     * 
-     * These functions handle device detection and generating the appropriate
-     * Google Maps app links based on the user's device.
-     */
-
-    /**
      * Detects if the user's device is Android.
      * @returns {boolean}
      */
@@ -613,9 +606,5 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(url, '_blank');
         }
     }
-
-    /**
-     * NEW HELPER FUNCTIONS END HERE
-     */
 
 });
