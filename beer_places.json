@@ -369,12 +369,12 @@
         "Ggl Adress": "Carrer de Còrsega, 544, Barcelona",
         "Bario": "Eixample",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJremkkcSipBIRYd6tLXSggjU",
-        "Monday": "11:00 AM - 2:30 PM, 5:15 - 8:30 PM",
-        "Tuesday": "5:15 - 8:30 PM",
-        "Wednesday": "11:00 AM - 2:30 PM, 5:15 - 8:30 PM",
-        "Thursday": "11:00 AM - 2:30 PM, 5:15 - 8:30 PM",
-        "Friday": "11:00 AM - 2:30 PM, 5:15 - 8:30 PM",
-        "Saturday": "11:00 AM - 2:30 PM, 5:15 - 8:30 PM",
+        "Monday": "11:00 AM - 2:30 PM, 5:15 PM - 8:30 PM",
+        "Tuesday": "5:15 PM - 8:30 PM",
+        "Wednesday": "11:00 AM - 2:30 PM, 5:15 PM - 8:30 PM",
+        "Thursday": "11:00 AM - 2:30 PM, 5:15 PM - 8:30 PM",
+        "Friday": "11:00 AM - 2:30 PM, 5:15 PM - 8:30 PM",
+        "Saturday": "11:00 AM - 2:30 PM, 5:15 PM - 8:30 PM",
         "Sunday": "Closed"
     },
     {
@@ -5802,12 +5802,12 @@
         "Bario": "Sarrià-Sant Gervasi",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJrUacH3aYpBIRUpmIDT75mhA",
         "Monday": "Closed",
-        "Tuesday": "1:30 - 3:15 PM, 8:30 PM - - 10:30 PM",
-        "Wednesday": "1:30 - 3:15 PM, 8:30 PM - - 10:30 PM",
-        "Thursday": "1:30 - 3:15 PM, 8:30 PM - - 10:30 PM",
-        "Friday": "1:30 - 3:15 PM, 8:30 PM - - 10:30 PM",
-        "Saturday": "1:30 - 3:15 PM, 8:30 PM - - 10:30 PM",
-        "Sunday": "1:30 - 3:15 PM"
+        "Tuesday": "1:30 PM - 3:15 PM, 8:30 PM - - 10:30 PM",
+        "Wednesday": "1:30 PM - 3:15 PM, 8:30 PM - - 10:30 PM",
+        "Thursday": "1:30 PM - 3:15 PM, 8:30 PM - - 10:30 PM",
+        "Friday": "1:30 PM - 3:15 PM, 8:30 PM - - 10:30 PM",
+        "Saturday": "1:30 PM - 3:15 PM, 8:30 PM - - 10:30 PM",
+        "Sunday": "1:30 PM - 3:15 PM"
     },
     {
         "Name": "BAR ORNITORRINKUS",
@@ -6941,7 +6941,7 @@
         "Thursday": "7:30 AM - 11:19 PM",
         "Friday": "7:30 AM - 11:19 PM",
         "Saturday": "8:30 AM - 11:30 PM",
-        "Sunday": "8:30 - 11:30 PM"
+        "Sunday": "8:30 PM - 11:30 PM"
     },
     {
         "Name": "Bar Salvatge",
@@ -7625,7 +7625,7 @@
         "Tuesday": "7:00 PM - 11:00 PM",
         "Wednesday": "6:30 PM - 11:00 PM",
         "Thursday": "6:30 PM - 11:00 PM",
-        "Friday": "1:30 - 4:00 PM, 8:00 PM - 12:00 AM",
+        "Friday": "1:30 PM - 4:00 PM, 8:00 PM - 12:00 AM",
         "Saturday": "1:00 PM - 4:00 PM, 8:00 PM - 12:00 AM",
         "Sunday": "1:00 PM - 4:00 PM"
     },
@@ -8909,11 +8909,11 @@
         "Ggl Adress": "Carrer d'Arnau d'Oms, 62, Barcelona",
         "Bario": "Nou Barris",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJSSeRhSW9pBIRZbBsmkuie4k",
-        "Monday": "9:15 AM - 2:15 PM, 5:15 - 9:00 PM",
-        "Tuesday": "9:15 AM - 2:15 PM, 5:15 - 9:00 PM",
-        "Wednesday": "9:15 AM - 2:15 PM, 5:15 - 9:00 PM",
-        "Thursday": "9:15 AM - 2:15 PM, 5:15 - 9:00 PM",
-        "Friday": "9:15 AM - 2:15 PM, 5:15 - 9:00 PM",
+        "Monday": "9:15 AM - 2:15 PM, 5:15 PM - 9:00 PM",
+        "Tuesday": "9:15 AM - 2:15 PM, 5:15 PM - 9:00 PM",
+        "Wednesday": "9:15 AM - 2:15 PM, 5:15 PM - 9:00 PM",
+        "Thursday": "9:15 AM - 2:15 PM, 5:15 PM - 9:00 PM",
+        "Friday": "9:15 AM - 2:15 PM, 5:15 PM - 9:00 PM",
         "Saturday": "Closed",
         "Sunday": "Closed"
     },
@@ -9877,11 +9877,11 @@
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJ_cftpZSipBIRQXphvATJeP4",
         "Monday": "Closed",
         "Tuesday": "Closed",
-        "Wednesday": "1:30 - 3:30 PM, 8:30 PM - - 11:00 PM",
-        "Thursday": "1:30 - 3:30 PM, 8:30 PM - - 11:00 PM",
-        "Friday": "1:30 - 3:30 PM, 8:30 PM - - 11:00 PM",
-        "Saturday": "1:30 - 3:30 PM, 8:30 PM - - 11:00 PM",
-        "Sunday": "1:30 - 4:00 PM"
+        "Wednesday": "1:30 PM - 3:30 PM, 8:30 PM - - 11:00 PM",
+        "Thursday": "1:30 PM - 3:30 PM, 8:30 PM - - 11:00 PM",
+        "Friday": "1:30 PM - 3:30 PM, 8:30 PM - - 11:00 PM",
+        "Saturday": "1:30 PM - 3:30 PM, 8:30 PM - - 11:00 PM",
+        "Sunday": "1:30 PM - 4:00 PM"
     },
     {
         "Name": "C/ Huelva.39 08020 Barcelona",
@@ -11149,10 +11149,10 @@
         "Ggl Adress": "Carrer del Xiprer, 24, Barcelona",
         "Bario": "Horta-Guinardó",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJc3dHhdOipBIRsXrFSdVeoP8",
-        "Monday": "6:30 AM - 3:00 PM, 5:15 - 9:45 PM",
-        "Tuesday": "6:30 AM - 3:00 PM, 5:15 - 9:45 PM",
-        "Wednesday": "6:30 AM - 3:00 PM, 5:15 - 9:45 PM",
-        "Thursday": "6:30 AM - 3:00 PM, 5:15 - 9:45 PM",
+        "Monday": "6:30 AM - 3:00 PM, 5:15 PM - 9:45 PM",
+        "Tuesday": "6:30 AM - 3:00 PM, 5:15 PM - 9:45 PM",
+        "Wednesday": "6:30 AM - 3:00 PM, 5:15 PM - 9:45 PM",
+        "Thursday": "6:30 AM - 3:00 PM, 5:15 PM - 9:45 PM",
         "Friday": "6:30 AM - 9:45 PM",
         "Saturday": "6:30 AM - 3:30 PM",
         "Sunday": "Closed"
@@ -12987,9 +12987,9 @@
         "Tuesday": "8:00 PM - 11:00 PM",
         "Wednesday": "8:00 PM - 11:00 PM",
         "Thursday": "8:00 PM - 11:00 PM",
-        "Friday": "1:30 - 4:00 PM, 8:00 PM - 11:00 PM",
-        "Saturday": "1:30 - 4:00 PM, 8:00 PM - 11:00 PM",
-        "Sunday": "1:30 - 4:00 PM, 8:00 PM - 11:00 PM"
+        "Friday": "1:30 PM - 4:00 PM, 8:00 PM - 11:00 PM",
+        "Saturday": "1:30 PM - 4:00 PM, 8:00 PM - 11:00 PM",
+        "Sunday": "1:30 PM - 4:00 PM, 8:00 PM - 11:00 PM"
     },
     {
         "Name": "Dragó Bar-Cafeteria",
@@ -13380,7 +13380,7 @@
         "Wednesday": "8:00 PM - 11:30 PM",
         "Thursday": "8:00 PM - 11:30 PM",
         "Friday": "8:00 PM - 11:30 PM",
-        "Saturday": "1:30 - 4:30 PM, 8:00 PM - 11:30 PM",
+        "Saturday": "1:30 PM - 4:30 PM, 8:00 PM - 11:30 PM",
         "Sunday": "1:00 PM - 4:30 PM"
     },
     {
@@ -14570,7 +14570,7 @@
         "Wednesday": "7:30 PM - 11:00 PM",
         "Thursday": "7:30 PM - 11:00 PM",
         "Friday": "7:30 PM - 11:00 PM",
-        "Saturday": "1:30 - 4:00 PM, 8:00 PM - 11:00 PM",
+        "Saturday": "1:30 PM - 4:00 PM, 8:00 PM - 11:00 PM",
         "Sunday": "Closed"
     },
     {
@@ -14860,11 +14860,11 @@
         "Bario": "Ciutat Vella",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJC0tT9P6ipBIRYF1XLyWa7rA",
         "Monday": "Closed",
-        "Tuesday": "1:30 - 3:30 PM, 8:30 PM - - 10:30 PM",
-        "Wednesday": "1:30 - 3:30 PM, 8:30 PM - - 10:30 PM",
-        "Thursday": "1:30 - 3:30 PM, 8:30 PM - - 10:30 PM",
-        "Friday": "1:30 - 3:30 PM, 8:30 PM - - 10:30 PM",
-        "Saturday": "1:30 - 3:30 PM, 8:30 PM - - 10:30 PM",
+        "Tuesday": "1:30 PM - 3:30 PM, 8:30 PM - - 10:30 PM",
+        "Wednesday": "1:30 PM - 3:30 PM, 8:30 PM - - 10:30 PM",
+        "Thursday": "1:30 PM - 3:30 PM, 8:30 PM - - 10:30 PM",
+        "Friday": "1:30 PM - 3:30 PM, 8:30 PM - - 10:30 PM",
+        "Saturday": "1:30 PM - 3:30 PM, 8:30 PM - - 10:30 PM",
         "Sunday": "Closed"
     },
     {
@@ -18010,10 +18010,10 @@
         "Bario": "Horta-Guinardó",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJDcIpuU29pBIRmSBW4A2DW70",
         "Monday": "Closed",
-        "Tuesday": "10:00 AM - 2:00 PM, 5:15 - 8:00 PM",
-        "Wednesday": "10:00 AM - 2:00 PM, 5:15 - 8:00 PM",
-        "Thursday": "10:00 AM - 2:00 PM, 5:15 - 8:00 PM",
-        "Friday": "10:00 AM - 2:00 PM, 5:15 - 8:00 PM",
+        "Tuesday": "10:00 AM - 2:00 PM, 5:15 PM - 8:00 PM",
+        "Wednesday": "10:00 AM - 2:00 PM, 5:15 PM - 8:00 PM",
+        "Thursday": "10:00 AM - 2:00 PM, 5:15 PM - 8:00 PM",
+        "Friday": "10:00 AM - 2:00 PM, 5:15 PM - 8:00 PM",
         "Saturday": "10:00 AM - 2:30 PM",
         "Sunday": "11:00 AM - 2:15 PM"
     },
@@ -19891,7 +19891,7 @@
         "Thursday": "7:00 PM - 11:30 PM",
         "Friday": "8:00 PM - 12:00 AM",
         "Saturday": "1:30 PM - 12:00 AM",
-        "Sunday": "1:30 - 4:00 PM, 6:00 PM - 11:30 PM"
+        "Sunday": "1:30 PM - 4:00 PM, 6:00 PM - 11:30 PM"
     },
     {
         "Name": "Lambicus Bar",
@@ -20124,11 +20124,11 @@
         "Bario": "Eixample",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJV0yThJyipBIRxqVJ5sagAc4",
         "Monday": "Closed",
-        "Tuesday": "8:30 - 11:00 PM",
-        "Wednesday": "1:30 - 3:30 PM, 8:30 PM - - 11:00 PM",
-        "Thursday": "1:30 - 3:30 PM, 8:30 PM - - 11:30 PM",
-        "Friday": "1:30 - 4:00 PM, 8:30 PM - - 11:30 PM",
-        "Saturday": "1:30 - 4:00 PM, 8:30 PM - - 11:30 PM",
+        "Tuesday": "8:30 PM - 11:00 PM",
+        "Wednesday": "1:30 PM - 3:30 PM, 8:30 PM - - 11:00 PM",
+        "Thursday": "1:30 PM - 3:30 PM, 8:30 PM - - 11:30 PM",
+        "Friday": "1:30 PM - 4:00 PM, 8:30 PM - - 11:30 PM",
+        "Saturday": "1:30 PM - 4:00 PM, 8:30 PM - - 11:30 PM",
         "Sunday": "Closed"
     },
     {
@@ -21006,11 +21006,11 @@
         "Bario": "Eixample",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJV1CutnyipBIRibw1dm7hSWc",
         "Monday": "Closed",
-        "Tuesday": "1:30 - 3:30 PM",
-        "Wednesday": "1:30 - 3:30 PM",
-        "Thursday": "1:30 - 3:30 PM",
-        "Friday": "1:30 - 3:30 PM",
-        "Saturday": "1:30 - 3:30 PM",
+        "Tuesday": "1:30 PM - 3:30 PM",
+        "Wednesday": "1:30 PM - 3:30 PM",
+        "Thursday": "1:30 PM - 3:30 PM",
+        "Friday": "1:30 PM - 3:30 PM",
+        "Saturday": "1:30 PM - 3:30 PM",
         "Sunday": "Closed"
     },
     {
@@ -22801,7 +22801,7 @@
         "Tuesday": "6:00 PM - 12:00 AM",
         "Wednesday": "6:00 PM - 12:00 AM",
         "Thursday": "6:00 PM - 12:30 AM",
-        "Friday": "1:30 - 3:30 PM, 7:00 PM - 12:30 AM",
+        "Friday": "1:30 PM - 3:30 PM, 7:00 PM - 12:30 AM",
         "Saturday": "1:30 PM - 12:30 AM",
         "Sunday": "Closed"
     },
@@ -24188,8 +24188,8 @@
         "Wednesday": "7:30 PM - 11:00 PM",
         "Thursday": "7:30 PM - 11:00 PM",
         "Friday": "7:30 PM - 11:00 PM",
-        "Saturday": "1:30 - 3:00 PM, 7:30 PM - 11:00 PM",
-        "Sunday": "1:30 - 3:00 PM, 7:30 PM - 11:00 PM"
+        "Saturday": "1:30 PM - 3:00 PM, 7:30 PM - 11:00 PM",
+        "Sunday": "1:30 PM - 3:00 PM, 7:30 PM - 11:00 PM"
     },
     {
         "Name": "Restaurante Sancho. Bar y Cafetería.Bcn",
@@ -24240,12 +24240,12 @@
         "Bario": "Sants-Montjuïc",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJeQu9LXuipBIRWL2eYjhP-k8",
         "Monday": "Closed",
-        "Tuesday": "1:30 - 3:30 PM, 7:30 PM - 10:30 PM",
-        "Wednesday": "1:30 - 3:30 PM, 7:30 PM - 10:30 PM",
-        "Thursday": "1:30 - 3:30 PM, 7:30 PM - 10:30 PM",
-        "Friday": "1:30 - 3:30 PM, 7:30 PM - 10:30 PM",
-        "Saturday": "1:30 - 3:30 PM, 7:30 PM - 10:30 PM",
-        "Sunday": "1:30 - 3:30 PM"
+        "Tuesday": "1:30 PM - 3:30 PM, 7:30 PM - 10:30 PM",
+        "Wednesday": "1:30 PM - 3:30 PM, 7:30 PM - 10:30 PM",
+        "Thursday": "1:30 PM - 3:30 PM, 7:30 PM - 10:30 PM",
+        "Friday": "1:30 PM - 3:30 PM, 7:30 PM - 10:30 PM",
+        "Saturday": "1:30 PM - 3:30 PM, 7:30 PM - 10:30 PM",
+        "Sunday": "1:30 PM - 3:30 PM"
     },
     {
         "Name": "Riko's",
@@ -26256,11 +26256,11 @@
         "Bario": "Sants-Montjuïc",
         "Google Link": "https://www.google.com/maps/place/?q=place_id:ChIJ04bKVYaYpBIRgrNfBtZlM7I",
         "Monday": "Closed",
-        "Tuesday": "1:30 - 4:30 PM",
-        "Wednesday": "1:30 - 4:30 PM",
-        "Thursday": "1:30 - 4:30 PM, 8:30 PM - PM - 1:30 AM",
-        "Friday": "1:30 - 4:30 PM, 8:30 PM - PM - 1:30 AM",
-        "Saturday": "1:30 - 4:30 PM, 8:30 PM - PM - 1:30 AM",
+        "Tuesday": "1:30 PM - 4:30 PM",
+        "Wednesday": "1:30 PM - 4:30 PM",
+        "Thursday": "1:30 PM - 4:30 PM, 8:30 PM - PM - 1:30 AM",
+        "Friday": "1:30 PM - 4:30 PM, 8:30 PM - PM - 1:30 AM",
+        "Saturday": "1:30 PM - 4:30 PM, 8:30 PM - PM - 1:30 AM",
         "Sunday": "Closed"
     },
     {
@@ -26274,8 +26274,8 @@
         "Wednesday": "8:00 PM - 11:00 PM",
         "Thursday": "8:00 PM - 11:00 PM",
         "Friday": "8:00 PM - 11:00 PM",
-        "Saturday": "1:30 - 4:00 PM, 8:00 PM - 11:00 PM",
-        "Sunday": "1:30 - 4:00 PM"
+        "Saturday": "1:30 PM - 4:00 PM, 8:00 PM - 11:00 PM",
+        "Sunday": "1:30 PM - 4:00 PM"
     },
     {
         "Name": "Taverna Miquel",
