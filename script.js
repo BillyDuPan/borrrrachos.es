@@ -257,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesType && matchesNeighborhood && (isOpen || includeClosed);
         });
     }
-    
 
     function displayResult(place, fact) {
         hideLoadingState();
@@ -294,10 +293,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${place.address}
             </p>
             <div class="button-group">
-                <a href="${googleMapsUrl}" target="_blank" class="button"><i class="fas fa-map-marker-alt"></i>Cómo llegar</a>
+                <a href="#" class="button map-button"><i class="fas fa-map-marker-alt"></i>Cómo llegar</a>
                 <a href="${whatsappUrl}" target="_blank" class="button"><i class="fab fa-whatsapp"></i>Compartir</a>
             </div>
         `;
+
+        /**
+         * NEW CODE STARTS HERE
+         * 
+         * This section modifies the "Cómo llegar" link to ensure it opens
+         * in the Google Maps app on mobile devices. It detects the user's
+         * device and constructs the appropriate URL scheme.
+         */
+
+        // Select the "Cómo llegar" link we just added
+        const mapButton = barDetailsElement.querySelector('.map-button');
+
+        // Add an event listener to handle the click
+        mapButton.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent the default anchor behavior
+            openGoogleMaps(place);
+        });
+
+        /**
+         * NEW CODE ENDS HERE
+         */
+
         return barDetailsElement;
     }
 
@@ -371,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return false;
     }
-    
+
     function parseTimeString(timeStr) {
         if (!timeStr) {
             console.error('Time string is undefined or null');
@@ -398,7 +419,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return hours * 60 + minutes;
     }
-    
 
     function clearResult() {
         const barDetails = elements.resultElement.querySelector('.bar-details');
@@ -516,4 +536,85 @@ document.addEventListener('DOMContentLoaded', () => {
             checkbox.addEventListener('change', updateErrorMessage);
         });
     }
+
+    /**
+     * NEW HELPER FUNCTIONS START HERE
+     * 
+     * These functions handle device detection and generating the appropriate
+     * Google Maps app links based on the user's device.
+     */
+
+    /**
+     * Detects if the user's device is Android.
+     * @returns {boolean}
+     */
+    function isAndroid() {
+        return /Android/i.test(navigator.userAgent);
+    }
+
+    /**
+     * Detects if the user's device is iOS.
+     * @returns {boolean}
+     */
+    function isIOS() {
+        return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    /**
+     * Extracts the place_id from the standard Google Maps URL.
+     * @param {string} googleLink - The standard Google Maps URL.
+     * @returns {string|null} - The extracted place_id or null if not found.
+     */
+    function getPlaceId(googleLink) {
+        try {
+            const url = new URL(googleLink);
+            const qParam = url.searchParams.get('q'); // Expected format: 'place_id:ChIJdVT-cki9pBIR2E-HQw5mxRc'
+            if (qParam && qParam.startsWith('place_id:')) {
+                return qParam.split(':')[1];
+            }
+            return null;
+        } catch (error) {
+            console.error('Invalid Google Maps URL:', googleLink);
+            return null;
+        }
+    }
+
+    /**
+     * Opens the Google Maps app with the specified place.
+     * Falls back to the standard Google Maps web URL if the app isn't installed.
+     * @param {Object} place - The place object containing googleLink and other details.
+     */
+    function openGoogleMaps(place) {
+        const placeId = getPlaceId(place.googleLink);
+        const standardUrl = place.googleLink;
+
+        if (!placeId) {
+            // If place_id is not found, open the standard URL
+            window.open(standardUrl, '_blank');
+            return;
+        }
+
+        if (isAndroid()) {
+            // Construct the Android Intent URL
+            const intentUrl = `intent://maps.google.com/maps?daddr=place_id:${placeId}#Intent;scheme=https;package=com.google.android.apps.maps;end`;
+            window.location = intentUrl;
+        } else if (isIOS()) {
+            // Construct the iOS Custom URL Scheme
+            const appUrl = `comgooglemaps://?q=place_id:${placeId}`;
+            // Attempt to open the Google Maps app
+            window.location = appUrl;
+            // Fallback to the standard URL after a short delay
+            setTimeout(() => {
+                window.open(standardUrl, '_blank');
+            }, 500);
+        } else {
+            // For desktop or other devices, open the standard URL in a new tab
+            window.open(standardUrl, '_blank');
+        }
+    }
+
+    /**
+     * NEW HELPER FUNCTIONS END HERE
+     */
+
 });
