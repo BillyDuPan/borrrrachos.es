@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedTypes = Object.keys(elements.filters).filter(key => elements.filters[key].checked);
         const selectedNeighborhoods = Object.keys(elements.neighborhoodFilters).filter(key => elements.neighborhoodFilters[key].checked);
         const includeClosed = elements.showClosedToggle.checked;
-    
+
         return beerPlaces.filter(place => {
             const matchesType = selectedTypes.includes(place.type);
             const matchesNeighborhood = selectedNeighborhoods.includes(place.neighborhood);
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add an event listener to handle the click
         mapButton.addEventListener('click', (e) => {
             e.preventDefault(); // Prevent the default anchor behavior
-            openGoogleMaps(place);
+            openGoogleMapsLink(googleMapsUrl);
         });
 
         /**
@@ -560,55 +560,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Extracts the place_id from the standard Google Maps URL.
-     * @param {string} googleLink - The standard Google Maps URL.
-     * @returns {string|null} - The extracted place_id or null if not found.
+     * Opens the Google Maps link directly.
+     * @param {string} url - The Google Maps URL to open.
      */
-    function getPlaceId(googleLink) {
-        try {
-            const url = new URL(googleLink);
-            const qParam = url.searchParams.get('q'); // Expected format: 'place_id:ChIJdVT-cki9pBIR2E-HQw5mxRc'
-            if (qParam && qParam.startsWith('place_id:')) {
-                return qParam.split(':')[1];
-            }
-            return null;
-        } catch (error) {
-            console.error('Invalid Google Maps URL:', googleLink);
-            return null;
-        }
-    }
-
-    /**
-     * Opens the Google Maps app with the specified place details.
-     * Falls back to the standard Google Maps web URL if the app isn't installed.
-     * @param {Object} place - The place object containing googleLink and other details.
-     */
-    function openGoogleMaps(place) {
-        const placeId = getPlaceId(place.googleLink);
-        const standardUrl = place.googleLink;
-
-        if (!placeId) {
-            // If place_id is not found, open the standard URL
-            window.open(standardUrl, '_blank');
-            return;
-        }
-
+    function openGoogleMapsLink(url) {
+        // Determine if the device is Android or iOS
         if (isAndroid()) {
-            // Construct the Android Intent URL for place details
-            const intentUrl = `intent://maps.google.com/maps?q=place_id:${placeId}#Intent;scheme=https;package=com.google.android.apps.maps;end`;
+            // For Android, use the Intent scheme
+            const intentUrl = `intent://maps.google.com/maps?${new URLSearchParams({
+                q: decodeURIComponent(url.split('query=')[1])
+            }).toString()}#Intent;scheme=https;package=com.google.android.apps.maps;end`;
             window.location = intentUrl;
         } else if (isIOS()) {
-            // Construct the iOS Custom URL Scheme for place details
-            const appUrl = `comgooglemaps://?q=place_id:${placeId}`;
+            // For iOS, use the comgooglemaps scheme
+            const appUrl = `comgooglemaps://?q=${encodeURIComponent(url.split('query=')[1])}`;
             // Attempt to open the Google Maps app
             window.location = appUrl;
             // Fallback to the standard URL after a short delay
             setTimeout(() => {
-                window.open(standardUrl, '_blank');
+                window.open(url, '_blank');
             }, 500);
         } else {
             // For desktop or other devices, open the standard URL in a new tab
-            window.open(standardUrl, '_blank');
+            window.open(url, '_blank');
         }
     }
 
