@@ -641,7 +641,7 @@ footer a:hover {
     h1 {
         font-size: 2rem;
     }
-    .button, .label, #filter-modal .modal-button, #filter-modal .chip, .filter-button, .modal-body p {
+    .button, .label, #filter-modal .modal-button, #filter-modal .chip, .filter-button {
         font-size: 0.8rem;
     }
     .bar-details .bar-name {
