@@ -420,7 +420,7 @@ button:disabled {
 /* Speech Bubble Header */
 .modal-header {
     position: relative;
-    background-color: var(--background-color);
+    background-color: rgba(255, 255, 255, 0.4);
     color: var(--primary-color);
     border: none;          /* No outlined border */
     border-radius: 15px;   /* Rounded bubble corners */
@@ -442,7 +442,7 @@ button:disabled {
        the apex (top point) will shift to the right of center */
     border-right: -5px solid transparent;
     border-left: 25px solid transparent;
-    border-bottom: 15px solid var(--background-color);
+    border-bottom: 15px solid rgba(255, 255, 255, 0.4);
 }
 
 
