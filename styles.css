@@ -411,8 +411,8 @@ button:disabled {
 
 .character {
     position: absolute;
-    top: -30px;    /* adjust as needed */
-    right: 0;      /* character in top-right corner */
+    top: -20px;    /* adjust as needed */
+    right: 10px;      /* character in top-right corner */
     width: 80px;
     height: auto;
 }
@@ -427,9 +427,8 @@ button:disabled {
     padding: 20px;
     text-align: left;
     /* Position the bubble slightly down and right relative to the character */
-    margin-top: 60px; 
+    margin-top: 80px; 
 }
-
 
 .modal-header::after {
     content: "";
@@ -453,8 +452,8 @@ button:disabled {
 }
 
 /* Style text inside the bubble */
-.modal-header h2 {
-    font-size: 1.3rem;
+.modal-header p {
+    font-size: 1.2rem;
     margin-bottom: 10px;
     line-height: 1.4;
 }
@@ -666,7 +665,7 @@ footer a:hover {
         font-size: 0.875rem;
     }
     .modal-header h2 {
-        font-size: 1.2rem;
+        font-size: 1.6rem;
     }
 }
 
