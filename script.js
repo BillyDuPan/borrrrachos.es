@@ -84,6 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let beerPlaces = [];
     let lottieAnimation;
     let clickCount = 0;
+    let firstTypeSelectionMade = false;
+    let firstNeighborhoodSelectionMade = false;
 
     // Initialization
     init();
@@ -592,66 +594,91 @@ document.addEventListener('DOMContentLoaded', () => {
         return string.replace(/\b\w/g, char => char.toUpperCase());
     }
 
-    /**
-     * Populates the type filters based on beer places data.
-     */
-    function populateTypeFilters() {
-        const typeFiltersContainer = document.getElementById('type-filters');
-        const types = [...new Set(beerPlaces.map(place => place.type))];
 
-        types.forEach(type => {
-            const checkboxId = `filter${type.replace(/[^a-zA-Z0-9]/g, '')}`;
 
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = checkboxId;
-            checkbox.checked = true;
-            checkbox.hidden = true;
+function populateTypeFilters() {
+    const typeFiltersContainer = document.getElementById('type-filters');
+    const types = [...new Set(beerPlaces.map(place => place.type))];
 
-            const label = document.createElement('label');
-            label.classList.add('chip');
-            label.htmlFor = checkboxId;
-            label.textContent = type;
+    types.forEach(type => {
+        const checkboxId = `filter${type.replace(/[^a-zA-Z0-9]/g, '')}`;
 
-            typeFiltersContainer.appendChild(checkbox);
-            typeFiltersContainer.appendChild(label);
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = checkboxId;
+        checkbox.checked = true;
+        checkbox.hidden = true;
 
-            elements.filters[type] = checkbox;
+        const label = document.createElement('label');
+        label.classList.add('chip');
+        label.htmlFor = checkboxId;
+        label.textContent = type;
 
-            checkbox.addEventListener('change', updateErrorMessage);
+        typeFiltersContainer.appendChild(checkbox);
+        typeFiltersContainer.appendChild(label);
+
+        elements.filters[type] = checkbox;
+
+        // Update the event listener to handle "first selection" logic
+        checkbox.addEventListener('change', () => {
+            if (!firstTypeSelectionMade) {
+                // First selection in this category
+                // Keep the clicked checkbox checked, uncheck all others
+                for (const key in elements.filters) {
+                    if (elements.filters[key] !== checkbox) {
+                        elements.filters[key].checked = false;
+                    }
+                }
+                checkbox.checked = true;
+                firstTypeSelectionMade = true;
+            } 
+            // After the first selection, the user can toggle freely
+            updateErrorMessage();
         });
-    }
+    });
+}
 
-    /**
-     * Populates the neighborhood filters based on beer places data.
-     */
-    function populateNeighborhoodFilters() {
-        const neighborhoodFiltersContainer = document.getElementById('neighborhood-filters');
-        const neighborhoods = [...new Set(beerPlaces.map(place => place.neighborhood))];
+function populateNeighborhoodFilters() {
+    const neighborhoodFiltersContainer = document.getElementById('neighborhood-filters');
+    const neighborhoods = [...new Set(beerPlaces.map(place => place.neighborhood))];
 
-        neighborhoods.forEach(neighborhood => {
-            const checkboxId = `filter${neighborhood.replace(/[^a-zA-Z0-9]/g, '')}`;
+    neighborhoods.forEach(neighborhood => {
+        const checkboxId = `filter${neighborhood.replace(/[^a-zA-Z0-9]/g, '')}`;
 
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = checkboxId;
-            checkbox.checked = true;
-            checkbox.hidden = true;
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = checkboxId;
+        checkbox.checked = true;
+        checkbox.hidden = true;
 
-            const label = document.createElement('label');
-            label.classList.add('chip');
-            label.htmlFor = checkboxId;
-            label.textContent = neighborhood;
+        const label = document.createElement('label');
+        label.classList.add('chip');
+        label.htmlFor = checkboxId;
+        label.textContent = neighborhood;
 
-            neighborhoodFiltersContainer.appendChild(checkbox);
-            neighborhoodFiltersContainer.appendChild(label);
+        neighborhoodFiltersContainer.appendChild(checkbox);
+        neighborhoodFiltersContainer.appendChild(label);
 
-            elements.neighborhoodFilters[neighborhood] = checkbox;
+        elements.neighborhoodFilters[neighborhood] = checkbox;
 
-            checkbox.addEventListener('change', updateErrorMessage);
+        // Update the event listener to handle "first selection" logic
+        checkbox.addEventListener('change', () => {
+            if (!firstNeighborhoodSelectionMade) {
+                // First selection in this category
+                // Keep the clicked checkbox checked, uncheck all others
+                for (const key in elements.neighborhoodFilters) {
+                    if (elements.neighborhoodFilters[key] !== checkbox) {
+                        elements.neighborhoodFilters[key].checked = false;
+                    }
+                }
+                checkbox.checked = true;
+                firstNeighborhoodSelectionMade = true;
+            } 
+            // After the first selection, the user can toggle freely
+            updateErrorMessage();
         });
-    }
-
+    });
+}
     /**
      * Detects if the user's device is Android.
      * @returns {boolean} - True if Android, false otherwise.
