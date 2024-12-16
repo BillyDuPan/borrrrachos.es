@@ -425,7 +425,6 @@ button:disabled {
     border: none;          /* No outlined border */
     border-radius: 15px;   /* Rounded bubble corners */
     padding: 20px;
-    max-width: 300px;
     text-align: left;
     /* Position the bubble slightly down and right relative to the character */
     margin-top: 60px; 
