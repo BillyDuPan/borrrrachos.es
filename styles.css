@@ -402,33 +402,68 @@ button:disabled {
     animation: fadeIn var(--transition-speed) ease-in-out;
 }
 
+/* Wrapper that allows positioning of character and bubble relative to each other */
+.modal-header-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.character {
+    position: absolute;
+    top: -30px;    /* adjust as needed */
+    right: 0;      /* character in top-right corner */
+    width: 80px;
+    height: auto;
+}
+
+/* Speech Bubble Header */
 .modal-header {
-    margin-bottom: 15px;
-    color: var(--primary-color);
-    text-align: center;
+    position: relative;
     background-color: var(--background-color);
-    padding: 15px;
-    border-radius: calc(var(--border-radius) - 15px);
+    color: var(--primary-color);
+    border: none;          /* No outlined border */
+    border-radius: 15px;   /* Rounded bubble corners */
+    padding: 20px;
+    max-width: 300px;
+    text-align: left;
+    /* Position the bubble slightly down and right relative to the character */
+    margin-top: 60px; 
 }
 
+
+.modal-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 75%;
+    transform: translateX(-50%) translateY(-100%);
+    width: 0;
+    height: 0;
+    /* By making the left and right borders uneven, 
+       the apex (top point) will shift to the right of center */
+    border-right: -5px solid transparent;
+    border-left: 25px solid transparent;
+    border-bottom: 15px solid var(--background-color);
+}
+
+
+/* Adjust text inside the bubble */
+.modal-header .speech-text {
+    margin: 0;
+}
+
+/* Style text inside the bubble */
 .modal-header h2 {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     margin-bottom: 10px;
+    line-height: 1.4;
 }
 
-.modal-header p {
-    font-size: 1.5rem;
-}
-
-.modal-body p {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin: 10px 0;
-    font-weight: 500;
-}
-
+/* Modal Button */
 .modal-button {
-    float: right;
+    display: block;
+    margin: 20px auto 0; /* Ensure button is below the bubble and centered */
     padding: 10px 20px;
     background-color: var(--button-bg-color);
     color: var(--button-text-color);
@@ -437,7 +472,6 @@ button:disabled {
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 20px;
     transition: background-color var(--transition-speed), transform var(--transition-speed);
 }
 
@@ -447,24 +481,6 @@ button:disabled {
     border: var(--button-border);
     transform: translateY(var(--button-hover-transition));
 }
-
-/* Filter Modal 
-#filter-modal .modal-content {
-    background: linear-gradient(180deg, #fceabb 0%, #f8b500 100%);
-    padding: 20px;
-    max-height: 80vh;
-    overflow-y: auto;
-    border: var(--button-border);
-    width: 80%;
-    max-width: 500px;
-    border-radius: var(--border-radius);
-    color: var(--text-color);
-    text-align: left;
-    position: relative;
-    box-shadow: var(--box-shadow);
-    animation: fadeIn var(--transition-speed) ease-in-out;
-}
-*/
 
 #filter-modal .modal-header h2 {
     font-size: 1.8rem;
@@ -651,7 +667,7 @@ footer a:hover {
         font-size: 0.875rem;
     }
     .modal-header h2 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 }
 
