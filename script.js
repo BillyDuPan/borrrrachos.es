@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Element References
+    // Element References (accessing them early is cheap, but you can also do it after first paint)
     const elements = {
         beerSound: document.getElementById('beerSound'),
         generateButton: document.getElementById('generateButton'),
@@ -9,13 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMessageElement: document.getElementById('error-message'),
         instructionModal: document.getElementById('instruction-modal'),
         closeModalButton: document.getElementById('close-modal'),
-        // Filter Modal Elements
         openFilterModalButton: document.getElementById('openFilterModal'),
         filterModal: document.getElementById('filter-modal'),
         applyFiltersButton: document.getElementById('applyFilters'),
-        // Toggle for Showing Closed Places
         showClosedToggle: document.getElementById('showClosedToggle'),
-        // Filters
         filters: {},
         neighborhoodFilters: {}
     };
@@ -87,44 +84,47 @@ document.addEventListener('DOMContentLoaded', () => {
     let firstTypeSelectionMade = false;
     let firstNeighborhoodSelectionMade = false;
 
-    // Initialization
-    init();
+    // Start minimal initialization: just disable the button and wait until first paint
+    disableGenerateButton('Cargando...');
 
-    /**
-     * Initializes the application by setting up necessary components.
-     */
-    function init() {
-        disableGenerateButton('Cargando...');
+    // Use requestAnimationFrame to wait until the browser has done initial painting.
+    // This helps ensure any heavy tasks happen after the LCP candidate is painted.
+    requestAnimationFrame(() => {
+        // After initial paint, schedule heavier tasks at idle time if possible
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(initHeavyTasks);
+        } else {
+            // Fallback if requestIdleCallback is not supported
+            setTimeout(initHeavyTasks, 200);
+        }
+    });
+
+    function initHeavyTasks() {
+        // Defer loading animations and data until after initial paint
         loadLottieAnimation();
-        loadBeerPlaces();
+        loadBeerPlaces().then(() => {
+            // After data is loaded and filters are populated, enable the button
+            enableGenerateButton('¡Empieza tu aventura!');
+            updateErrorMessage();
+        });
         addEventListeners();
+        // Show instructions after main content is ready; it can also be deferred
         showInstructionModal();
     }
 
-    /**
-     * Disables the generate button and sets its text.
-     * @param {string} text - The text to display on the button.
-     */
     function disableGenerateButton(text) {
         elements.generateButton.disabled = true;
         elements.generateButton.innerText = text;
     }
 
-    /**
-     * Enables the generate button and sets its text.
-     * @param {string} text - The text to display on the button.
-     */
     function enableGenerateButton(text) {
         elements.generateButton.disabled = false;
         elements.generateButton.innerText = text;
     }
 
-    /**
-     * Loads beer places data from a JSON file.
-     */
     async function loadBeerPlaces() {
         try {
-            const response = await fetch('beer_places.json');
+            const response = await fetch('beer_places.json', { cache: 'force-cache' });
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -149,8 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             populateTypeFilters();
             populateNeighborhoodFilters();
-            enableGenerateButton('¡Empieza tu aventura!');
-            updateErrorMessage();
         } catch (error) {
             console.error('Error loading beer places data:', error);
             alert('No se pudo cargar la información. Por favor, inténtalo más tarde.');
@@ -158,10 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Loads the Lottie animation.
-     */
     function loadLottieAnimation() {
+        // Defer loading Lottie animation until needed
+        // If lottie is not crucial to initial rendering,
+        // consider lazy-loading its script as well.
         lottieAnimation = lottie.loadAnimation({
             container: elements.lottieContainer,
             renderer: 'svg',
@@ -172,9 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lottieAnimation.setSpeed(2.5);
     }
 
-    /**
-     * Adds all necessary event listeners.
-     */
     function addEventListeners() {
         elements.generateButton.addEventListener('click', debounce(handleGenerateButtonClick, 400));
         elements.openFilterModalButton.addEventListener('click', showFilterModal);
@@ -187,10 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.showClosedToggle.addEventListener('change', updateErrorMessage);
     }
 
-    /**
-     * Handles clicks outside modals to close them.
-     * @param {Event} event - The click event.
-     */
     function handleWindowClick(event) {
         if (event.target === elements.instructionModal) {
             hideInstructionModal();
@@ -200,9 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Handles the generate button click event.
-     */
     async function handleGenerateButtonClick() {
         if (areAllFiltersUnchecked()) {
             displayErrorMessage('No has seleccionado ningún filtro. Por favor, elige al menos uno.');
@@ -218,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showLoadingState();
         updateButtonText();
 
-        await delay(400); // Simulate loading delay
+        await delay(400);
 
         const filteredPlaces = getFilteredPlaces();
 
@@ -235,42 +223,29 @@ document.addEventListener('DOMContentLoaded', () => {
         displayResult(randomPlace, randomFact);
     }
 
-    /**
-     * Plays the beer sound.
-     */
     function playBeerSound() {
+        // Optional: Defer loading of the audio file
         elements.beerSound.play().catch(error => {
             console.error('Error playing sound:', error);
         });
     }
 
-    /**
-     * Shows the loading state with animation.
-     */
     function showLoadingState() {
         elements.lottieContainer.style.display = 'block';
         clearResult();
-        lottieAnimation.goToAndPlay(0, true);
+        if (lottieAnimation) {
+            lottieAnimation.goToAndPlay(0, true);
+        }
     }
 
-    /**
-     * Hides the loading state.
-     */
     function hideLoadingState() {
         elements.lottieContainer.style.display = 'none';
     }
 
-    /**
-     * Updates the generate button text based on click count.
-     */
     function updateButtonText() {
         elements.generateButton.innerText = getButtonText();
     }
 
-    /**
-     * Determines the button text based on the number of clicks.
-     * @returns {string} - The text to display on the button.
-     */
     function getButtonText() {
         if (clickCount === 0) {
             return '¡Empieza tu aventura!';
@@ -282,10 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Retrieves the list of places filtered by selected criteria.
-     * @returns {Array} - The filtered list of beer places.
-     */
     function getFilteredPlaces() {
         const selectedTypes = Object.keys(elements.filters).filter(key => elements.filters[key].checked);
         const selectedNeighborhoods = Object.keys(elements.neighborhoodFilters).filter(key => elements.neighborhoodFilters[key].checked);
@@ -299,25 +270,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Displays the result with place details and a beer fact.
-     * @param {Object} place - The selected beer place.
-     * @param {string} fact - The random beer fact.
-     */
     function displayResult(place, fact) {
         hideLoadingState();
-
         const barDetailsElement = createBarDetailsElement(place);
         elements.resultElement.appendChild(barDetailsElement);
-
         elements.beerFactElement.innerText = `Dato curioso: ${fact}`;
     }
 
-    /**
-     * Creates the DOM element containing the bar details.
-     * @param {Object} place - The beer place details.
-     * @returns {HTMLElement} - The bar details element.
-     */
     function createBarDetailsElement(place) {
         const barDetailsElement = document.createElement('div');
         barDetailsElement.classList.add('bar-details');
@@ -334,7 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const googleMapsUrl = place.googleLink;
         const whatsappUrl = `https://api.whatsapp.com/send?text=¡Mira%20este%20sitio!:%20${encodeURIComponent(place.name)}%20en%20${encodeURIComponent(place.address)}.%20Cómo%20llegar:%20${encodeURIComponent(googleMapsUrl)}`;
 
-        barDetailsElement.innerHTML += `
+        // Using innerHTML carefully after initial render should be fine
+        barDetailsElement.insertAdjacentHTML('beforeend', `
             <p class="bar-name"><strong>${place.name}</strong></p>
             <div class="labels">
                 <span class="label neighborhood">📍 ${place.neighborhood}</span>
@@ -347,9 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <a href="#" class="button map-button"><i class="fas fa-map-marker-alt"></i>Cómo llegar</a>
                 <a href="${whatsappUrl}" target="_blank" class="button"><i class="fab fa-whatsapp"></i>Compartir</a>
             </div>
-        `;
+        `);
 
-        // Add event listener for "Cómo llegar" button
         const mapButton = barDetailsElement.querySelector('.map-button');
         mapButton.addEventListener('click', (e) => {
             e.preventDefault();
@@ -359,11 +318,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return barDetailsElement;
     }
 
-    /**
-     * Determines if a place is currently open based on its opening hours.
-     * @param {Object} place - The beer place details.
-     * @returns {boolean} - True if open, false otherwise.
-     */
     function isPlaceOpenNow(place) {
         const options = {
             timeZone: 'Europe/Madrid',
@@ -378,17 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentHour = 0;
         let currentMinute = 0;
 
-        parts.forEach(part => {
-            if (part.type === 'weekday') {
-                currentDayName = part.value;
-            }
-            if (part.type === 'hour') {
-                currentHour = parseInt(part.value);
-            }
-            if (part.type === 'minute') {
-                currentMinute = parseInt(part.value);
-            }
-        });
+        for (const part of parts) {
+            if (part.type === 'weekday') currentDayName = part.value;
+            if (part.type === 'hour') currentHour = parseInt(part.value);
+            if (part.type === 'minute') currentMinute = parseInt(part.value);
+        }
 
         const currentTime = currentHour * 60 + currentMinute;
         const hoursToday = place.openingHours[currentDayName];
@@ -397,26 +345,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
 
-        // Clean and split the time strings
         let cleanedHours = hoursToday.replace(/\s+/g, ' ').trim()
-                                     .replace(/[–—−‑]/g, '-')
-                                     .replace(/\s*-\s*/, '-');
+            .replace(/[–—−‑]/g, '-')
+            .replace(/\s*-\s*/, '-');
         const [openTimeStr, closeTimeStr] = cleanedHours.split('-').map(s => s.trim());
 
-        if (!openTimeStr || !closeTimeStr) {
-            console.error(`Could not split opening hours for ${place.name}: ${hoursToday}`);
-            return false;
-        }
+        if (!openTimeStr || !closeTimeStr) return false;
 
         const openTime = parseTimeString(openTimeStr);
         const closeTime = parseTimeString(closeTimeStr);
 
-        if (openTime === null || closeTime === null) {
-            console.error(`Invalid time format for ${place.name}: ${hoursToday}`);
-            return false;
-        }
+        if (openTime === null || closeTime === null) return false;
 
-        // Adjust for places that close after midnight
+        // Adjust for wrap-around times past midnight
         if (closeTime < openTime) {
             return currentTime >= openTime || currentTime < closeTime;
         } else {
@@ -424,68 +365,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Parses a time string into minutes since midnight.
-     * @param {string} timeStr - The time string (e.g., "10:00 AM").
-     * @returns {number|null} - The time in minutes or null if invalid.
-     */
     function parseTimeString(timeStr) {
-        if (!timeStr) {
-            console.error('Time string is undefined or null');
-            return null;
-        }
-
+        if (!timeStr) return null;
         timeStr = timeStr.replace(/\s+/g, ' ').trim().replace(/(AM|PM)/i, ' $1').trim();
         const timeParts = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-
-        if (!timeParts) {
-            console.error(`Invalid time string: ${timeStr}`);
-            return null;
-        }
-
+        if (!timeParts) return null;
         let hours = parseInt(timeParts[1], 10);
         const minutes = parseInt(timeParts[2], 10);
         const ampm = timeParts[3].toUpperCase();
 
-        if (ampm === 'PM' && hours < 12) {
-            hours += 12;
-        }
-        if (ampm === 'AM' && hours === 12) {
-            hours = 0;
-        }
+        if (ampm === 'PM' && hours < 12) hours += 12;
+        if (ampm === 'AM' && hours === 12) hours = 0;
 
         return hours * 60 + minutes;
     }
 
-    /**
-     * Clears the previous result from the DOM.
-     */
     function clearResult() {
         const barDetails = elements.resultElement.querySelector('.bar-details');
         if (barDetails) {
             barDetails.remove();
         }
-
-        // Remove "¿Cómo funciona?" link if it exists
         const comoFunctionaLink = document.getElementById('comoFunctionaLink');
         if (comoFunctionaLink) {
             comoFunctionaLink.remove();
         }
     }
 
-    /**
-     * Checks if all filters are unchecked.
-     * @returns {boolean} - True if all filters are unchecked, false otherwise.
-     */
     function areAllFiltersUnchecked() {
         const typeFiltersUnchecked = !Object.values(elements.filters).some(filter => filter.checked);
         const neighborhoodFiltersUnchecked = !Object.values(elements.neighborhoodFilters).some(filter => filter.checked);
         return typeFiltersUnchecked || neighborhoodFiltersUnchecked;
     }
 
-    /**
-     * Updates the error message based on filter selection.
-     */
     function updateErrorMessage() {
         if (areAllFiltersUnchecked()) {
             displayErrorMessage('No has seleccionado ningún filtro. Por favor, elige al menos uno.');
@@ -496,209 +407,153 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Displays an error message.
-     * @param {string} message - The error message to display.
-     */
     function displayErrorMessage(message) {
         elements.errorMessageElement.innerHTML = `<p>${message}</p>`;
     }
 
-    /**
-     * Clears the error message.
-     */
     function clearErrorMessage() {
         elements.errorMessageElement.innerHTML = '';
     }
 
-    /**
-     * Shows the instruction modal.
-     */
     function showInstructionModal() {
+        // Defer showing modal slightly if needed, but it's likely fine here.
         elements.instructionModal.style.display = 'grid';
         document.body.style.overflow = 'hidden';
     }
 
-    /**
-     * Hides the instruction modal and adds the "¿Cómo funciona?" link.
-     */
     function hideInstructionModal() {
         elements.instructionModal.style.display = 'none';
         document.body.style.overflow = '';
 
-        // Check if 'comoFunctionaLink' exists
         if (!document.getElementById('comoFunctionaLink')) {
             const link = document.createElement('a');
             link.href = '#';
             link.id = 'comoFunctionaLink';
             link.textContent = '¿Cómo funciona?';
             link.classList.add('como-funciona-link');
-
-            // Add click listener to reopen the instruction modal
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 showInstructionModal();
                 link.remove();
             });
-
-            // Append the link to the result element
             elements.resultElement.appendChild(link);
 
-            // Reset the Lottie animation
-            lottieAnimation.goToAndStop(0, true);
+            if (lottieAnimation) {
+                lottieAnimation.goToAndStop(0, true);
+            }
             elements.lottieContainer.style.display = 'block';
             link.insertAdjacentElement('afterend', elements.lottieContainer);
         }
     }
 
-    /**
-     * Shows the filter modal.
-     */
     function showFilterModal() {
         elements.filterModal.style.display = 'grid';
         document.body.style.overflow = 'hidden';
     }
 
-    /**
-     * Hides the filter modal.
-     */
     function hideFilterModal() {
         elements.filterModal.style.display = 'none';
         document.body.style.overflow = '';
     }
 
-    /**
-     * Returns a promise that resolves after a specified delay.
-     * @param {number} ms - The delay in milliseconds.
-     * @returns {Promise}
-     */
     function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    /**
-     * Retrieves a random item from an array.
-     * @param {Array} array - The array to select from.
-     * @returns {*} - A random item from the array.
-     */
     function getRandomItem(array) {
         return array[Math.floor(Math.random() * array.length)];
     }
 
-    /**
-     * Capitalizes the first letter of each word in a string.
-     * @param {string} string - The string to capitalize.
-     * @returns {string} - The capitalized string.
-     */
     function capitalizeFirstLetter(string) {
         return string.replace(/\b\w/g, char => char.toUpperCase());
     }
 
+    function populateTypeFilters() {
+        const typeFiltersContainer = document.getElementById('type-filters');
+        const types = [...new Set(beerPlaces.map(place => place.type))];
 
+        const fragment = document.createDocumentFragment();
+        types.forEach(type => {
+            const checkboxId = `filter${type.replace(/[^a-zA-Z0-9]/g, '')}`;
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = checkboxId;
+            checkbox.checked = true;
+            checkbox.hidden = true;
 
-function populateTypeFilters() {
-    const typeFiltersContainer = document.getElementById('type-filters');
-    const types = [...new Set(beerPlaces.map(place => place.type))];
+            const label = document.createElement('label');
+            label.classList.add('chip');
+            label.htmlFor = checkboxId;
+            label.textContent = type;
 
-    types.forEach(type => {
-        const checkboxId = `filter${type.replace(/[^a-zA-Z0-9]/g, '')}`;
+            fragment.appendChild(checkbox);
+            fragment.appendChild(label);
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = checkboxId;
-        checkbox.checked = true;
-        checkbox.hidden = true;
+            elements.filters[type] = checkbox;
 
-        const label = document.createElement('label');
-        label.classList.add('chip');
-        label.htmlFor = checkboxId;
-        label.textContent = type;
-
-        typeFiltersContainer.appendChild(checkbox);
-        typeFiltersContainer.appendChild(label);
-
-        elements.filters[type] = checkbox;
-
-        // Update the event listener to handle "first selection" logic
-        checkbox.addEventListener('change', () => {
-            if (!firstTypeSelectionMade) {
-                // First selection in this category
-                // Keep the clicked checkbox checked, uncheck all others
-                for (const key in elements.filters) {
-                    if (elements.filters[key] !== checkbox) {
-                        elements.filters[key].checked = false;
+            checkbox.addEventListener('change', () => {
+                if (!firstTypeSelectionMade) {
+                    for (const key in elements.filters) {
+                        if (elements.filters[key] !== checkbox) {
+                            elements.filters[key].checked = false;
+                        }
                     }
+                    checkbox.checked = true;
+                    firstTypeSelectionMade = true;
                 }
-                checkbox.checked = true;
-                firstTypeSelectionMade = true;
-            } 
-            // After the first selection, the user can toggle freely
-            updateErrorMessage();
+                updateErrorMessage();
+            });
         });
-    });
-}
+        typeFiltersContainer.appendChild(fragment);
+    }
 
-function populateNeighborhoodFilters() {
-    const neighborhoodFiltersContainer = document.getElementById('neighborhood-filters');
-    const neighborhoods = [...new Set(beerPlaces.map(place => place.neighborhood))];
+    function populateNeighborhoodFilters() {
+        const neighborhoodFiltersContainer = document.getElementById('neighborhood-filters');
+        const neighborhoods = [...new Set(beerPlaces.map(place => place.neighborhood))];
 
-    neighborhoods.forEach(neighborhood => {
-        const checkboxId = `filter${neighborhood.replace(/[^a-zA-Z0-9]/g, '')}`;
+        const fragment = document.createDocumentFragment();
+        neighborhoods.forEach(neighborhood => {
+            const checkboxId = `filter${neighborhood.replace(/[^a-zA-Z0-9]/g, '')}`;
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = checkboxId;
+            checkbox.checked = true;
+            checkbox.hidden = true;
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = checkboxId;
-        checkbox.checked = true;
-        checkbox.hidden = true;
+            const label = document.createElement('label');
+            label.classList.add('chip');
+            label.htmlFor = checkboxId;
+            label.textContent = neighborhood;
 
-        const label = document.createElement('label');
-        label.classList.add('chip');
-        label.htmlFor = checkboxId;
-        label.textContent = neighborhood;
+            fragment.appendChild(checkbox);
+            fragment.appendChild(label);
 
-        neighborhoodFiltersContainer.appendChild(checkbox);
-        neighborhoodFiltersContainer.appendChild(label);
+            elements.neighborhoodFilters[neighborhood] = checkbox;
 
-        elements.neighborhoodFilters[neighborhood] = checkbox;
-
-        // Update the event listener to handle "first selection" logic
-        checkbox.addEventListener('change', () => {
-            if (!firstNeighborhoodSelectionMade) {
-                // First selection in this category
-                // Keep the clicked checkbox checked, uncheck all others
-                for (const key in elements.neighborhoodFilters) {
-                    if (elements.neighborhoodFilters[key] !== checkbox) {
-                        elements.neighborhoodFilters[key].checked = false;
+            checkbox.addEventListener('change', () => {
+                if (!firstNeighborhoodSelectionMade) {
+                    for (const key in elements.neighborhoodFilters) {
+                        if (elements.neighborhoodFilters[key] !== checkbox) {
+                            elements.neighborhoodFilters[key].checked = false;
+                        }
                     }
+                    checkbox.checked = true;
+                    firstNeighborhoodSelectionMade = true;
                 }
-                checkbox.checked = true;
-                firstNeighborhoodSelectionMade = true;
-            } 
-            // After the first selection, the user can toggle freely
-            updateErrorMessage();
+                updateErrorMessage();
+            });
         });
-    });
-}
-    /**
-     * Detects if the user's device is Android.
-     * @returns {boolean} - True if Android, false otherwise.
-     */
+        neighborhoodFiltersContainer.appendChild(fragment);
+    }
+
     function isAndroid() {
         return /Android/i.test(navigator.userAgent);
     }
 
-    /**
-     * Detects if the user's device is iOS.
-     * @returns {boolean} - True if iOS, false otherwise.
-     */
     function isIOS() {
         return /iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
-    /**
-     * Opens the Google Maps link appropriately based on the user's device.
-     * @param {string} url - The Google Maps URL to open.
-     */
     function openGoogleMapsLink(url) {
         if (isAndroid()) {
             const intentUrl = `intent://maps.google.com/maps?${new URLSearchParams({
@@ -716,12 +571,6 @@ function populateNeighborhoodFilters() {
         }
     }
 
-        /**
-     * Debounces a function by the specified delay.
-     * @param {Function} func - The function to debounce.
-     * @param {number} delayMs - The delay in milliseconds.
-     * @returns {Function} - The debounced function.
-     */
     function debounce(func, delayMs) {
         let timeoutId;
         return function(...args) {
