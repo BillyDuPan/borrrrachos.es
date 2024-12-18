@@ -33,7 +33,7 @@
 body {
     font-family: var(--font-body);
     color: var(--text-color);
-    background: linear-gradient(180deg, #fceabb 0%, #f8b500 100%);
+    background: linear-gradient(180deg, #fceabb 0%, #f8b200 100%);
     overflow-x: hidden;
 }
 
@@ -386,7 +386,7 @@ button:disabled {
 }
 
 .modal-content {
-    background: linear-gradient(180deg, #fceabb 0%, #f8b500 100%);
+    background: linear-gradient(180deg, #fceabb 0%, #f8b200 100%);
     padding: 20px;
     margin: 0;
     border: var(--button-border);
